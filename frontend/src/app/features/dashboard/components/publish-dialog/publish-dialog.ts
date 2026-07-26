@@ -60,6 +60,12 @@ export class PublishDialogComponent implements OnInit, AfterViewInit, OnDestroy 
     this.paymentService.publishEvent(this.eventSlug, this.selectedTier).subscribe({
       next: (res) => {
         this.clientSecret = res.clientSecret;
+        if (this.clientSecret === 'bypass') {
+          this.processing = false;
+          this.loading = false;
+          this.published.emit();
+          return;
+        }
         this.loading = false;
         setTimeout(() => this.mountPaymentElement(), 0);
       },
