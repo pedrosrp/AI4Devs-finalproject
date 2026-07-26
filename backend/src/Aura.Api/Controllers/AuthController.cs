@@ -34,7 +34,12 @@ public class AuthController : ControllerBase
     [HttpPost("magic-link")]
     public async Task<IActionResult> RequestMagicLink([FromBody] MagicLinkRequest request)
     {
-        var baseUrl = _configuration["MagicLink:BaseUrl"] ?? "http://localhost:4200";
+        var baseUrl = _configuration["MagicLink:BaseUrl"];
+        if (string.IsNullOrEmpty(baseUrl))
+        {
+            var scheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
+            baseUrl = $"{scheme}://{Request.Host}";
+        }
         var magicLinkUrlTemplate = $"{baseUrl}/verify?token={{token}}";
         await _authService.RequestMagicLinkAsync(request.Email, magicLinkUrlTemplate);
         
