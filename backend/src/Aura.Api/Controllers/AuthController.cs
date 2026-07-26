@@ -173,7 +173,7 @@ public class AuthController : ControllerBase
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.Equals("Development", StringComparison.OrdinalIgnoreCase) != true,
+            Secure = Request.IsHttps,
             SameSite = SameSiteMode.Strict,
             Path = "/",
             Expires = DateTimeOffset.UtcNow.AddHours(24)
