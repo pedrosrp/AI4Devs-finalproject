@@ -1,179 +1,251 @@
-<div class="flex flex-col min-h-screen bg-bg-cream">
+<div class="min-h-screen bg-bg-cream pb-12">
   <!-- Top Bar -->
-  <header class="bg-card-bg border-b border-border flex items-center justify-between px-6 py-4 fixed top-0 w-full z-10 shadow-sm">
-    <div class="flex items-center gap-4">
-      <a routerLink="/dashboard" class="text-text-secondary hover:text-text-primary transition-colors">
-        <i class="fa-solid fa-arrow-left"></i>
-      </a>
-      <div class="text-sm font-medium text-text-secondary flex items-center">
-        Dashboard <span class="mx-2">/</span> <span class="text-text-primary">{{ eventData()?.coupleNames || eventData()?.name || 'Loading...' }}</span>
+  <header class="bg-card-bg border-b border-border-light sticky top-0 z-20">
+    <div class="flex items-center justify-between px-6 lg:px-8 py-4">
+      <div class="flex items-center gap-4">
+        <a routerLink="/dashboard" class="text-text-secondary hover:text-text-primary transition-colors">
+          <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <div class="text-sm font-medium text-text-secondary flex items-center">
+          Dashboard <span class="mx-2">/</span> <span class="text-text-primary">{{ eventData()?.coupleNames || eventData()?.name || 'Loading...' }}</span>
+        </div>
+        <h1 class="font-heading text-2xl text-text-primary ml-4 m-0 border-l border-border pl-4">Edit Event</h1>
+
+        <div class="ml-4 text-xs font-medium" [ngClass]="{
+          'text-success': saveState() === 'saved',
+          'text-warning': saveState() === 'saving',
+          'text-info': saveState() === 'unsaved',
+          'text-error': saveState() === 'error'
+        }">
+          @if (saveState() === 'saved') {
+            <i class="fa-solid fa-check mr-1"></i> Saved
+          } @else if (saveState() === 'saving') {
+            <i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...
+          } @else if (saveState() === 'unsaved') {
+            <i class="fa-solid fa-circle text-[8px] mr-1"></i> Unsaved changes
+          } @else if (saveState() === 'error') {
+            <i class="fa-solid fa-triangle-exclamation mr-1"></i> Error saving
+          }
+        </div>
       </div>
-      <h1 class="font-heading text-2xl text-text-primary ml-6 m-0 border-l border-border pl-6">Edit Event</h1>
-      
-      <div class="ml-4 text-xs font-medium" [ngClass]="{
-        'text-success': saveState() === 'saved',
-        'text-warning': saveState() === 'saving',
-        'text-info': saveState() === 'unsaved',
-        'text-error': saveState() === 'error'
-      }">
-        @if (saveState() === 'saved') {
-          <i class="fa-solid fa-check mr-1"></i> Saved
-        } @else if (saveState() === 'saving') {
-          <i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...
-        } @else if (saveState() === 'unsaved') {
-          <i class="fa-solid fa-circle text-[8px] mr-1"></i> Unsaved changes
-        } @else if (saveState() === 'error') {
-          <i class="fa-solid fa-triangle-exclamation mr-1"></i> Error saving
-        }
+
+      <div class="flex items-center gap-3">
+        <app-button variant="ghost" icon="fa-solid fa-eye">Preview</app-button>
+        <app-button variant="secondary" icon="fa-regular fa-floppy-disk" (onClick)="forceSaveClicked()">Save</app-button>
+        <app-button variant="primary" icon="fa-solid fa-paper-plane" *ngIf="eventData()?.status === 'Draft' || eventData()?.status === 'draft'" (onClick)="publishEvent()">Publish</app-button>
       </div>
-    </div>
-    
-    <div class="flex items-center gap-3">
-      <app-button variant="ghost" icon="fa-solid fa-eye">Preview</app-button>
-      <app-button variant="secondary" (onClick)="forceSaveClicked()">Save</app-button>
-      <app-button variant="primary" icon="fa-solid fa-rocket" *ngIf="eventData()?.status === 'Draft'" (onClick)="publishEvent()">Publish</app-button>
     </div>
   </header>
 
-  <!-- Main Workspace -->
-  <div class="flex flex-1 pt-[72px]">
-    
-    <!-- Sidebar -->
-    <aside class="w-96 bg-bg-surface border-r border-border overflow-y-auto h-[calc(100vh-72px)] p-6 flex flex-col gap-6" [formGroup]="editorForm">
-      
-      @if (errorMessage()) {
-        <div class="bg-error-bg text-error p-4 rounded-md text-sm font-medium mb-4">{{ errorMessage() }}</div>
+  <!-- Tabs -->
+  <nav class="px-6 lg:px-8 pt-6">
+    <div class="inline-flex items-center gap-2 bg-bg-surface rounded-full p-1 border border-border-light">
+      @for (tab of tabs; track tab.id) {
+        <button
+          type="button"
+          class="px-5 py-2 rounded-full text-sm font-medium transition-colors duration-150"
+          [ngClass]="activeTab() === tab.id
+            ? 'bg-primary text-text-inverse'
+            : 'text-text-secondary hover:text-text-primary hover:bg-card-bg'"
+          (click)="setActiveTab(tab.id)">
+          {{ tab.label }}
+        </button>
+      }
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="px-6 lg:px-8 pt-6" [formGroup]="editorForm">
+    @if (errorMessage()) {
+      <div class="bg-error-bg text-error p-4 rounded-md text-sm font-medium mb-6">{{ errorMessage() }}</div>
+    }
+
+    <div class="max-w-4xl">
+      <!-- Details Tab -->
+      @if (activeTab() === 'details') {
+        <app-card customClass="p-8">
+          <h2 class="font-heading text-xl text-text-primary mb-6">Event Details</h2>
+          <div class="flex flex-col gap-5">
+            <div class="flex flex-col gap-1">
+              <label class="text-sm font-medium text-text-primary">Couple Names</label>
+              <input type="text" formControlName="coupleNames" placeholder="Pedro & Diana" class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm bg-card-bg text-text-primary">
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <label class="text-sm font-medium text-text-primary">Event Name</label>
+              <input type="text" formControlName="name" placeholder="Pedro & Diana's Wedding" class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm bg-card-bg text-text-primary">
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <label class="text-sm font-medium text-text-primary">Event Date</label>
+              <input type="date" formControlName="eventDate" class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm bg-card-bg text-text-primary">
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <label class="text-sm font-medium text-text-primary">Venue Name</label>
+              <input type="text" formControlName="venueName" placeholder="La Finca de Aranjuez" class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm bg-card-bg text-text-primary">
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <label class="text-sm font-medium text-text-primary">Venue Address</label>
+              <input type="text" formControlName="venueAddress" placeholder="Calle de la Finca, 1, Aranjuez" class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm bg-card-bg text-text-primary">
+            </div>
+          </div>
+        </app-card>
       }
 
-      <app-card customClass="p-6">
-        <h3 class="font-heading text-lg text-text-primary mb-4">Template</h3>
-        <div class="grid grid-cols-2 gap-4">
-          @for (tpl of templates(); track tpl.id) {
-            <label class="cursor-pointer group">
-              <input type="radio" formControlName="templateId" [value]="tpl.id" class="sr-only">
-              <div class="h-24 bg-cover bg-center rounded-md border-2 transition-colors"
-                   [ngClass]="editorForm.get('templateId')?.value === tpl.id ? 'border-primary' : 'border-transparent group-hover:border-border'"
-                   [style.background-image]="'url(' + tpl.previewUrl + ')'"></div>
-              <span class="block text-center mt-2 text-sm font-medium" 
-                    [ngClass]="editorForm.get('templateId')?.value === tpl.id ? 'text-primary' : 'text-text-secondary'">
-                {{ tpl.name }}
-              </span>
-            </label>
+      <!-- Design Tab -->
+      @if (activeTab() === 'design') {
+        <div class="flex flex-col gap-6">
+          <app-card customClass="p-8">
+            <h3 class="font-heading text-lg text-text-primary mb-4">Template</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              @for (tpl of templates(); track tpl.id) {
+                <label class="cursor-pointer group">
+                  <input type="radio" formControlName="templateId" [value]="tpl.id" class="sr-only">
+                  <div class="h-32 bg-cover bg-center rounded-md border-2 transition-colors"
+                       [ngClass]="editorForm.get('templateId')?.value === tpl.id ? 'border-primary' : 'border-transparent group-hover:border-border'"
+                       [style.background-image]="'url(' + tpl.previewUrl + ')'"></div>
+                  <span class="block text-center mt-2 text-sm font-medium"
+                        [ngClass]="editorForm.get('templateId')?.value === tpl.id ? 'text-primary' : 'text-text-secondary'">
+                    {{ tpl.name }}
+                  </span>
+                </label>
+              }
+            </div>
+          </app-card>
+
+          <app-card customClass="p-8">
+            <h3 class="font-heading text-lg text-text-primary mb-4">Colors</h3>
+            <div class="flex gap-6">
+              <div class="flex flex-col gap-2 flex-1">
+                <label class="text-sm font-medium text-text-primary">Primary Color</label>
+                <div class="flex items-center gap-3">
+                  <input type="color" formControlName="primaryColor" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+                  <input type="text" formControlName="primaryColor" class="flex-1 px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm bg-card-bg text-text-primary font-mono">
+                </div>
+              </div>
+              <div class="flex flex-col gap-2 flex-1">
+                <label class="text-sm font-medium text-text-primary">Secondary Color</label>
+                <div class="flex items-center gap-3">
+                  <input type="color" formControlName="secondaryColor" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+                  <input type="text" formControlName="secondaryColor" class="flex-1 px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm bg-card-bg text-text-primary font-mono">
+                </div>
+              </div>
+            </div>
+          </app-card>
+
+          <app-card customClass="p-8">
+            <h3 class="font-heading text-lg text-text-primary mb-4">Typography</h3>
+            <div class="flex flex-col gap-2 w-full">
+              <label class="text-sm font-medium text-text-primary">Font Family</label>
+              <select formControlName="fontFamily" class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm bg-card-bg text-text-primary">
+                <option value="Inter">Inter</option>
+                <option value="Playfair Display">Playfair Display</option>
+                <option value="Montserrat">Montserrat</option>
+                <option value="Lora">Lora</option>
+              </select>
+            </div>
+          </app-card>
+        </div>
+      }
+
+      <!-- Hero Tab -->
+      @if (activeTab() === 'hero') {
+        <app-card customClass="p-8">
+          <h3 class="font-heading text-lg text-text-primary mb-4">Hero Image</h3>
+          <div
+            class="border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer"
+            [ngClass]="{
+              'border-border hover:border-primary-light bg-bg-surface': !editorForm.get('heroImageUrl')?.value && !isUploading(),
+              'border-primary bg-primary-light bg-opacity-10': isUploading(),
+              'border-transparent p-0 overflow-hidden relative group': editorForm.get('heroImageUrl')?.value && !isUploading()
+            }"
+            (dragover)="onDragOver($event)"
+            (drop)="onDrop($event)"
+            (click)="fileInput.click()">
+
+            @if (isUploading()) {
+              <div class="text-primary font-medium flex flex-col items-center">
+                <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
+                Uploading...
+              </div>
+            } @else if (editorForm.get('heroImageUrl')?.value) {
+              <div class="h-72 bg-cover bg-center w-full" [style.background-image]="'url(' + editorForm.get('heroImageUrl')?.value + ')'"></div>
+              <div class="absolute inset-0 bg-bg-dark bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <span class="text-text-inverse font-medium"><i class="fa-solid fa-camera mr-2"></i> Change Image</span>
+              </div>
+            } @else {
+              <div class="text-text-secondary flex flex-col items-center">
+                <i class="fa-solid fa-cloud-arrow-up text-3xl mb-3 text-text-muted"></i>
+                <span class="font-medium text-text-primary mb-1">Click or drag to upload</span>
+                <span class="text-sm">Max 5MB (JPG, PNG)</span>
+              </div>
+            }
+            <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/jpeg,image/png" class="sr-only">
+          </div>
+        </app-card>
+      }
+
+      <!-- Post-Event Tab -->
+      @if (activeTab() === 'post-event') {
+        <app-card customClass="p-8">
+          <h3 class="font-heading text-lg text-text-primary mb-4">Post-Event</h3>
+          <div class="flex flex-col gap-5">
+            <div class="flex flex-col gap-2 w-full">
+              <label class="text-sm font-medium text-text-primary">Thank You Message</label>
+              <textarea formControlName="thankYouMessage" rows="4" placeholder="Thank you for celebrating with us!" class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm bg-card-bg text-text-primary resize-none"></textarea>
+            </div>
+            <div class="flex flex-col gap-2 w-full">
+              <label class="text-sm font-medium text-text-primary">Photo Gallery URL</label>
+              <input type="url" formControlName="photoGalleryUrl" placeholder="https://photos.app.goo.gl/..." class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm bg-card-bg text-text-primary">
+            </div>
+          </div>
+        </app-card>
+      }
+
+      <!-- Actions Tab -->
+      @if (activeTab() === 'actions') {
+        <app-card customClass="p-8">
+          <h3 class="font-heading text-lg text-text-primary mb-4">Event Actions</h3>
+          <div class="flex flex-col gap-4">
+            <div class="flex items-center justify-between p-4 border border-border rounded-md bg-bg-surface">
+              <div>
+                <p class="font-medium text-text-primary">Regenerate Microsite</p>
+                <p class="text-sm text-text-secondary">Rebuild and publish the guest microsite with the latest changes.</p>
+              </div>
+              <app-button variant="secondary" (onClick)="regenerateMicrosite()">Regenerate</app-button>
+            </div>
+            <div class="flex items-center justify-between p-4 border border-border rounded-md bg-bg-surface">
+              <div>
+                <p class="font-medium text-text-primary">Publish Event</p>
+                <p class="text-sm text-text-secondary">Make the event public and start sending invitations.</p>
+              </div>
+              <app-button variant="primary" icon="fa-solid fa-paper-plane" *ngIf="eventData()?.status === 'Draft' || eventData()?.status === 'draft'" (onClick)="publishEvent()">Publish</app-button>
+            </div>
+          </div>
+        </app-card>
+      }
+    </div>
+
+    <!-- Live Preview -->
+    <section class="mt-8 bg-bg-surface rounded-2xl p-8 lg:p-12 border border-border-light" [ngStyle]="getPreviewStyles()">
+      <p class="text-center text-sm font-medium text-text-secondary mb-6">Live Preview</p>
+
+      <div class="w-full max-w-[360px] bg-card-bg rounded-lg shadow-lg overflow-hidden text-center mx-auto" [attr.data-template]="getSelectedTemplateName()">
+        <div class="h-80 bg-cover bg-center flex items-center justify-center" [ngClass]="{ 'bg-text-muted/20': !getPreviewHeroImage() }" [style.background-image]="getPreviewHeroImage() ? 'url(' + getPreviewHeroImage() + ')' : 'none'">
+          @if (!getPreviewHeroImage()) {
+            <i class="fa-regular fa-image text-4xl text-text-muted"></i>
           }
         </div>
-      </app-card>
-
-      <app-card customClass="p-6">
-        <h3 class="font-heading text-lg text-text-primary mb-4">Colors</h3>
-        <div class="flex gap-4">
-          <div class="flex flex-col gap-1 flex-1">
-            <label class="text-sm font-medium text-text-primary">Primary Color</label>
-            <div class="flex items-center gap-2">
-              <input type="color" formControlName="primaryColor" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
-              <input type="text" formControlName="primaryColor" class="flex-1 px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm bg-card-bg text-text-primary">
-            </div>
-          </div>
-          <div class="flex flex-col gap-1 flex-1">
-            <label class="text-sm font-medium text-text-primary">Secondary Color</label>
-            <div class="flex items-center gap-2">
-              <input type="color" formControlName="secondaryColor" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
-              <input type="text" formControlName="secondaryColor" class="flex-1 px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm bg-card-bg text-text-primary">
-            </div>
-          </div>
-        </div>
-      </app-card>
-
-      <app-card customClass="p-6">
-        <h3 class="font-heading text-lg text-text-primary mb-4">Typography</h3>
-        <div class="flex flex-col gap-1 w-full">
-          <label class="text-sm font-medium text-text-primary">Font Family</label>
-          <select formControlName="fontFamily" class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm bg-card-bg text-text-primary">
-            <option value="Inter">Inter</option>
-            <option value="Playfair Display">Playfair Display</option>
-            <option value="Montserrat">Montserrat</option>
-            <option value="Lora">Lora</option>
-          </select>
-        </div>
-      </app-card>
-
-      <app-card customClass="p-6">
-        <h3 class="font-heading text-lg text-text-primary mb-4">Hero Image</h3>
-        <div 
-          class="border-2 border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer"
-          [ngClass]="{
-            'border-border hover:border-primary-light bg-bg-surface': !editorForm.get('heroImageUrl')?.value && !isUploading(),
-            'border-primary bg-primary-light bg-opacity-10': isUploading(),
-            'border-transparent p-0 overflow-hidden relative group': editorForm.get('heroImageUrl')?.value && !isUploading()
-          }"
-          (dragover)="onDragOver($event)"
-          (drop)="onDrop($event)"
-          (click)="fileInput.click()">
-          
-          @if (isUploading()) {
-            <div class="text-primary font-medium flex flex-col items-center">
-              <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
-              Uploading...
-            </div>
-          } @else if (editorForm.get('heroImageUrl')?.value) {
-            <div class="h-40 bg-cover bg-center w-full" [style.background-image]="'url(' + editorForm.get('heroImageUrl')?.value + ')'"></div>
-            <div class="absolute inset-0 bg-bg-dark bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <span class="text-text-inverse font-medium"><i class="fa-solid fa-camera mr-2"></i> Change Image</span>
-            </div>
-          } @else {
-            <div class="text-text-secondary flex flex-col items-center">
-              <i class="fa-solid fa-cloud-arrow-up text-3xl mb-3 text-text-muted"></i>
-              <span class="font-medium text-text-primary mb-1">Click or drag to upload</span>
-              <span class="text-sm">Max 5MB (JPG, PNG)</span>
-            </div>
-          }
-          <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/jpeg,image/png" class="sr-only">
-        </div>
-      </app-card>
-
-      <app-card customClass="p-6">
-        <h3 class="font-heading text-lg text-text-primary mb-4">Post-Event</h3>
-        <div class="flex flex-col gap-4">
-          <div class="flex flex-col gap-1 w-full">
-            <label class="text-sm font-medium text-text-primary">Thank You Message</label>
-            <textarea formControlName="thankYouMessage" rows="3" placeholder="Thank you for celebrating with us!" class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm bg-card-bg text-text-primary resize-none"></textarea>
-          </div>
-          <div class="flex flex-col gap-1 w-full">
-            <label class="text-sm font-medium text-text-primary">Photo Gallery URL</label>
-            <input type="url" formControlName="photoGalleryUrl" placeholder="https://photos.app.goo.gl/..." class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm bg-card-bg text-text-primary">
-          </div>
-        </div>
-      </app-card>
-    </aside>
-
-    <!-- Preview Area -->
-    <main class="flex-1 flex items-center justify-center p-8 overflow-y-auto h-[calc(100vh-72px)]">
-      <div class="bg-card-bg rounded-lg shadow-md w-full max-w-3xl min-h-[600px] border border-border overflow-hidden" [attr.data-template]="getSelectedTemplateName()" [ngStyle]="getPreviewStyles()">
-        
-        <!-- Mock Preview Content -->
-        <div class="relative h-64 bg-cover bg-center flex items-center justify-center" 
-             [style.background-image]="editorForm.get('heroImageUrl')?.value ? 'url(' + editorForm.get('heroImageUrl')?.value + ')' : 'none'"
-             [ngClass]="{'bg-bg-surface': !editorForm.get('heroImageUrl')?.value}">
-          <div class="absolute inset-0 bg-bg-dark bg-opacity-40"></div>
-          <div class="relative z-10 text-center px-6">
-            <h1 class="text-5xl font-heading mb-4" [style.color]="editorForm.get('primaryColor')?.value">
-              {{ eventData()?.coupleNames || 'Couple Names' }}
-            </h1>
-            <p class="text-xl font-medium tracking-wide uppercase" [style.color]="editorForm.get('secondaryColor')?.value">
-              {{ (eventData()?.eventDate | date:'longDate') || 'Event Date' }}
-            </p>
-          </div>
-        </div>
-        
-        <div class="p-12 text-center" [style.background-color]="editorForm.get('secondaryColor')?.value">
-          <div class="max-w-md mx-auto p-8 rounded-lg shadow-sm bg-card-bg border border-border-light" [style.color]="editorForm.get('primaryColor')?.value">
-            <h2 class="text-3xl font-heading mb-6">Join Us</h2>
-            <p class="text-lg mb-8">{{ eventData()?.venueName || 'Venue Name' }}</p>
-            <app-button variant="primary" [style.background-color]="editorForm.get('primaryColor')?.value" [style.border-color]="editorForm.get('primaryColor')?.value" [style.color]="'#fff'">
-              RSVP Now
-            </app-button>
-          </div>
+        <div class="px-6 pt-8 pb-12">
+          <p class="font-body text-xs font-medium tracking-[3px] uppercase text-accent mb-4">We are getting married</p>
+          <h2 class="font-heading text-4xl font-normal leading-tight text-text-primary mb-4">{{ editorForm.get('coupleNames')?.value || 'Couple Names' }}</h2>
+          <p class="font-heading text-xl font-normal text-text-primary mb-2">{{ getPreviewEventDate() }}</p>
+          <p class="font-body text-sm text-text-secondary mb-6">{{ editorForm.get('venueName')?.value || 'Venue Name' }}</p>
+          <button type="button" class="inline-flex items-center justify-center px-7 py-3 rounded-md bg-primary text-text-inverse font-body text-sm font-medium border-none transition-colors hover:bg-primary-dark">RSVP Now</button>
         </div>
       </div>
-    </main>
-  </div>
+    </section>
+  </main>
 </div>
