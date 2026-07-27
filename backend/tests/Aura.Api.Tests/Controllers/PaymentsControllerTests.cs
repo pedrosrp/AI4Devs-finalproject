@@ -1,4 +1,5 @@
 using Aura.Api.Controllers;
+using Aura.Core.Configuration;
 using Aura.Core.Enums;
 using Aura.Core.Exceptions;
 using Aura.Core.Interfaces.Repositories;
@@ -6,6 +7,7 @@ using Aura.Core.Interfaces.Services;
 using Aura.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using System.Text;
@@ -17,14 +19,16 @@ public class PaymentsControllerTests
 {
     private readonly IPaymentService _paymentService;
     private readonly IEventRepository _eventRepository;
+    private readonly IOptions<StripeOptions> _stripeOptions;
     private readonly PaymentsController _sut;
 
     public PaymentsControllerTests()
     {
         _paymentService = Substitute.For<IPaymentService>();
         _eventRepository = Substitute.For<IEventRepository>();
-        
-        _sut = new PaymentsController(_paymentService, _eventRepository)
+        _stripeOptions = Options.Create(new StripeOptions());
+
+        _sut = new PaymentsController(_paymentService, _eventRepository, _stripeOptions)
         {
             ControllerContext = new ControllerContext
             {
