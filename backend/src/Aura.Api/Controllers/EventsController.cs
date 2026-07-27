@@ -117,8 +117,9 @@ public class EventsController : ControllerBase
         if (ev == null) return NotFound();
 
         using var stream = file.OpenReadStream();
-        var objectName = $"events/{slug}/hero{extension}";
-        var url = await objectStorageService.UploadFileAsync("uploads", objectName, stream, file.ContentType);
+        var objectName = $"{slug}/hero{extension}";
+        await objectStorageService.UploadFileAsync("static-sites", objectName, stream, file.ContentType);
+        var url = $"/e/{slug}/hero{extension}";
 
         // Ideally we should update the database here, but the frontend will also call PUT to save all state.
         // Just in case, we could do a partial update, but EventService doesn't have it.
