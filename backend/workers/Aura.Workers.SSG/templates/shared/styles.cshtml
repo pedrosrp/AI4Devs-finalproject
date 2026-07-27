@@ -5,8 +5,8 @@
     --primary-color: @(Model.PrimaryColor ?? "#000000");
     --secondary-color: @(Model.SecondaryColor ?? "#ffffff");
     --font-family: '@(Model.FontFamily ?? "Arial")', sans-serif;
-    --hero-image-url: @(string.IsNullOrEmpty(Model.HeroImageUrl) ? "none" : $"url('{Model.HeroImageUrl}')");
-    --hero-overlay: @(string.IsNullOrEmpty(Model.HeroImageUrl) ? "none" : "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4))");
+    --hero-image-url: @Raw(string.IsNullOrEmpty(Model.HeroImageUrl) ? "none" : $"url('{Model.HeroImageUrl}')");
+    --hero-overlay: @Raw(string.IsNullOrEmpty(Model.HeroImageUrl) ? "none" : "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4))");
 }
 
 body {
