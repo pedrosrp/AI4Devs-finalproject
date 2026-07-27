@@ -94,10 +94,7 @@ export class PublishDialogComponent implements OnInit, AfterViewInit, OnDestroy 
       appearance: { theme: 'stripe' }
     });
 
-    this.paymentElement = this.elements.create('payment', {
-      paymentMethodTypes: ['card'],
-      layout: 'tabs'
-    });
+    this.paymentElement = this.elements.create('payment');
     this.paymentElement.mount(this.paymentElementRef.nativeElement);
   }
 
