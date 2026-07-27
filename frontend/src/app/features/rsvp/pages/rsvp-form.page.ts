@@ -208,7 +208,10 @@ export class RsvpFormPageComponent implements OnInit {
     this.rsvpService.submitRsvp(this.token, this.request).subscribe({
       next: (res) => {
         this.router.navigate(['/rsvp', this.token, 'confirmation'], { 
-          state: { confirmation: res }
+          state: { 
+            confirmation: res,
+            eventInfo: this.info
+          }
         });
       },
       error: (err) => {
