@@ -39,7 +39,7 @@
                 width="100%"
                 height="400"
                 frameborder="0" style="border:0"
-                src="https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=@Uri.EscapeDataString(Model.VenueAddress)" allowfullscreen>
+                src="https://maps.google.com/maps?q=@Uri.EscapeDataString(Model.VenueAddress)&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen>
             </iframe>
             <div class="actions">
                 <a href="https://www.google.com/maps/dir/?api=1&destination=@Uri.EscapeDataString(Model.VenueAddress)" target="_blank" class="btn btn-secondary">Get Directions</a>

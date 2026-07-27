@@ -94,6 +94,8 @@ public class EventsController : ControllerBase
     }
 
     [HttpPost("{slug}/upload-hero-image")]
+    [RequestSizeLimit(10 * 1024 * 1024)]
+    [RequestFormLimits(ValueLengthLimit = 10 * 1024 * 1024, MultipartBodyLengthLimit = 10 * 1024 * 1024)]
     public async Task<IActionResult> UploadHeroImage(string slug, Microsoft.AspNetCore.Http.IFormFile file, [FromServices] IObjectStorageService objectStorageService)
     {
         if (file == null || file.Length == 0)
