@@ -144,7 +144,8 @@ export class RsvpFormPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private rsvpService: RsvpService
+    private rsvpService: RsvpService,
+    private cdr: import('@angular/core').ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -181,6 +182,7 @@ export class RsvpFormPageComponent implements OnInit {
           this.errorState = 'invalid';
         } finally {
           this.isLoading = false;
+          this.cdr.detectChanges();
         }
       },
       error: (err) => {
@@ -191,6 +193,7 @@ export class RsvpFormPageComponent implements OnInit {
         } else {
           this.errorState = 'invalid'; // Fallback for other errors
         }
+        this.cdr.detectChanges();
       }
     });
   }
@@ -215,6 +218,7 @@ export class RsvpFormPageComponent implements OnInit {
         } else {
           this.submitError = 'An error occurred while submitting your RSVP. Please try again.';
         }
+        this.cdr.detectChanges();
       }
     });
   }
