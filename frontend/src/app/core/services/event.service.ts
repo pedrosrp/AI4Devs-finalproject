@@ -40,4 +40,8 @@ export class EventService {
   sendManualReminders(slug: string, guestIds: string[]): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/${slug}/reminders/manual`, { guestIds });
   }
+
+  regenerateMicrosite(slug: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/${slug}/regenerate-microsite`, {});
+  }
 }

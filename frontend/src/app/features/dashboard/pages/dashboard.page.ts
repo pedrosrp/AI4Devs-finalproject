@@ -50,6 +50,10 @@ import { PublishDialogComponent } from '../components/publish-dialog/publish-dia
                        style="padding: 0.5rem 1rem; border: 1px solid #7C9A72; border-radius: 6px; text-decoration: none; color: white; font-weight: 500; font-size: 0.875rem; text-align: center; flex: 1; background-color: #7C9A72; cursor: pointer;">
                       View Site
                     </a>
+                    <button (click)="regenerateMicrosite(event)"
+                       style="padding: 0.5rem 1rem; border: 1px solid #C9A96E; border-radius: 6px; text-decoration: none; color: #374151; font-weight: 500; font-size: 0.875rem; text-align: center; flex: 1; background-color: #f9fafb; cursor: pointer;">
+                      Regenerate Site
+                    </button>
                   }
                   @if (event.status === 'Draft') {
                     <button (click)="openPublishDialog(event)" 
@@ -100,5 +104,17 @@ export default class DashboardPage implements OnInit {
   onPublished() {
     this.selectedEventToPublish = null;
     this.ngOnInit(); // Refresh list to see updated status
+  }
+
+  regenerateMicrosite(event: EventResponse) {
+    this.eventService.regenerateMicrosite(event.slug).subscribe({
+      next: () => {
+        alert('Microsite regeneration queued. It may take a few seconds.');
+      },
+      error: (err) => {
+        console.error('Failed to regenerate microsite', err);
+        alert('Failed to regenerate microsite. Please try again.');
+      }
+    });
   }
 }
