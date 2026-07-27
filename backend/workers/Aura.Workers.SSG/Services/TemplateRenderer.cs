@@ -19,7 +19,7 @@ public class TemplateRenderer
     {
         var templateName = @event.Template?.Name?.ToLowerInvariant() switch
         {
-            "modern minimal" => "modern",
+            "modern minimal" or "modern minimalist" => "modern",
             "rustic charm" => "rustic",
             "premium gold" => "premium",
             _ => "classic"
