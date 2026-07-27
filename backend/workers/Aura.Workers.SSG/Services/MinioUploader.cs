@@ -25,21 +25,9 @@ public class MinioUploader
             {
                 var makeBucketArgs = new MakeBucketArgs().WithBucket(_bucketName);
                 await _minioClient.MakeBucketAsync(makeBucketArgs, cancellationToken);
-                
-                var policy = $@"{{
-                    ""Statement"": [
-                        {{
-                            ""Action"": [""s3:GetObject""],
-                            ""Effect"": ""Allow"",
-                            ""Principal"": ""*"",
-                            ""Resource"": [""arn:aws:s3:::{_bucketName}/*""]
-                        }}
-                    ],
-                    ""Version"": ""2012-10-17""
-                }}";
-                var setPolicyArgs = new SetPolicyArgs().WithBucket(_bucketName).WithPolicy(policy);
-                await _minioClient.SetPolicyAsync(setPolicyArgs, cancellationToken);
             }
+
+            await EnsurePublicReadPolicyAsync(cancellationToken);
 
             var putObjectArgs = new PutObjectArgs()
                 .WithBucket(_bucketName)
@@ -56,5 +44,23 @@ public class MinioUploader
             _logger.LogError(ex, "Error uploading {ObjectName} to bucket {BucketName}", objectName, _bucketName);
             throw;
         }
+    }
+
+    private async Task EnsurePublicReadPolicyAsync(CancellationToken cancellationToken)
+    {
+        var policy = $@"{{
+            ""Statement"": [
+                {{
+                    ""Action"": [""s3:GetObject""],
+                    ""Effect"": ""Allow"",
+                    ""Principal"": ""*"",
+                    ""Resource"": [""arn:aws:s3:::{_bucketName}/*""]
+                }}
+            ],
+            ""Version"": ""2012-10-17""
+        }}";
+        var setPolicyArgs = new SetPolicyArgs().WithBucket(_bucketName).WithPolicy(policy);
+        await _minioClient.SetPolicyAsync(setPolicyArgs, cancellationToken);
+        _logger.LogDebug("Public read policy applied to bucket {BucketName}", _bucketName);
     }
 }
