@@ -18,6 +18,6 @@ spec:
       containers:
       - name: frontend
         image: aura-frontend
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
