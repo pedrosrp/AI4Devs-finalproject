@@ -4,76 +4,79 @@ import { CommonModule } from '@angular/common';
 import { EventService } from '../../../core/services/event.service';
 import { EventResponse } from '../../../core/models/event.model';
 import { PublishDialogComponent } from '../components/publish-dialog/publish-dialog';
+import { ButtonComponent } from '../../../shared/components/button.component';
+import { CardComponent } from '../../../shared/components/card.component';
+import { BadgeComponent } from '../../../shared/components/badge.component';
+import { EmptyStateComponent } from '../../../shared/components/empty-state.component';
 
 @Component({
   standalone: true,
-  imports: [RouterLink, CommonModule, PublishDialogComponent],
+  imports: [RouterLink, CommonModule, PublishDialogComponent, ButtonComponent, CardComponent, BadgeComponent, EmptyStateComponent],
   template: `
-    <div style="padding: 2rem; max-width: 1200px; margin: 0 auto;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-        <h2>Welcome to your Dashboard!</h2>
-        <a routerLink="/events/new" style="padding: 0.75rem 1.5rem; background: #000; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold;">Create New Event</a>
-      </div>
-      
-      @if (loading()) {
-        <p>Loading your events...</p>
-      } @else if (events().length === 0) {
-        <div style="text-align: center; padding: 4rem; background: #f3f4f6; border-radius: 12px;">
-          <p style="margin-bottom: 2rem; color: #4b5563;">You don't have any events yet.</p>
-          <a routerLink="/events/new" style="padding: 0.75rem 1.5rem; background: #000; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold;">Create your first Event</a>
+    <div class="min-h-screen bg-bg-cream p-6 md:p-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="font-heading text-4xl text-text-primary">Your Events</h2>
+          <app-button routerLink="/events/new" variant="primary" icon="fa-solid fa-plus">Create New Event</app-button>
         </div>
-      } @else {
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
-          @for (event of events(); track event.slug) {
-            <div style="border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
-              <div style="height: 150px; background-size: cover; background-position: center;"
-                   [style.background-image]="event.heroImageUrl ? 'url(' + event.heroImageUrl + ')' : 'linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%)'">
-              </div>
-              <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column;">
-                <h3 style="margin-top: 0; margin-bottom: 0.5rem;">{{ event.name }}</h3>
-                <p style="color: #6b7280; margin-bottom: 1rem; font-size: 0.875rem;">{{ event.eventDate | date }}</p>
-                <div style="margin-top: auto; display: flex; gap: 0.5rem;">
-                  <a [routerLink]="['/events', event.slug, 'edit']" 
-                     style="padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; text-decoration: none; color: #374151; font-weight: 500; font-size: 0.875rem; text-align: center; flex: 1;">
-                    Edit Event
-                  </a>
-                  <a [routerLink]="['/events', event.slug, 'guests']" 
-                     style="padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 6px; text-decoration: none; color: #374151; font-weight: 500; font-size: 0.875rem; text-align: center; flex: 1; background-color: #f9fafb;">
-                    Guests
-                  </a>
-                  <a [routerLink]="['/events', event.slug, 'dashboard']" 
-                     style="padding: 0.5rem 1rem; border: 1px solid #4f46e5; border-radius: 6px; text-decoration: none; color: #4f46e5; font-weight: 500; font-size: 0.875rem; text-align: center; flex: 1; background-color: #eef2ff;">
-                    Stats
-                  </a>
-                  @if (event.status === 'Published' && event.micrositeUrl) {
-                    <a [href]="event.micrositeUrl" target="_blank" rel="noopener noreferrer"
-                       style="padding: 0.5rem 1rem; border: 1px solid #7C9A72; border-radius: 6px; text-decoration: none; color: white; font-weight: 500; font-size: 0.875rem; text-align: center; flex: 1; background-color: #7C9A72; cursor: pointer;">
-                      View Site
-                    </a>
-                    <button (click)="regenerateMicrosite(event)"
-                       style="padding: 0.5rem 1rem; border: 1px solid #C9A96E; border-radius: 6px; text-decoration: none; color: #374151; font-weight: 500; font-size: 0.875rem; text-align: center; flex: 1; background-color: #f9fafb; cursor: pointer;">
-                      Regenerate Site
-                    </button>
-                  }
-                  @if (event.status === 'Draft') {
-                    <button (click)="openPublishDialog(event)" 
-                       style="padding: 0.5rem 1rem; border: 1px solid #10b981; border-radius: 6px; text-decoration: none; color: white; font-weight: 500; font-size: 0.875rem; text-align: center; flex: 1; background-color: #10b981; cursor: pointer;">
-                      Publish
-                    </button>
-                  }
+        
+        @if (loading()) {
+          <div class="flex justify-center items-center h-64">
+            <p class="text-text-secondary font-medium">Loading your events...</p>
+          </div>
+        } @else if (events().length === 0) {
+          <app-empty-state 
+            title="You don't have any events yet." 
+            description="Create your first event to start managing RSVPs, sending invitations, and collecting guest information." 
+            [icon]="true">
+            <i icon class="fa-regular fa-calendar-plus text-4xl text-text-secondary"></i>
+            <app-button actions routerLink="/events/new" variant="primary">Create your first Event</app-button>
+          </app-empty-state>
+        } @else {
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (event of events(); track event.slug) {
+              <app-card customClass="flex flex-col h-full">
+                <div class="h-40 bg-cover bg-center"
+                     [style.background-image]="event.heroImageUrl ? 'url(' + event.heroImageUrl + ')' : 'none'"
+                     [ngClass]="{'bg-bg-surface': !event.heroImageUrl}">
                 </div>
-              </div>
-            </div>
-          }
-        </div>
-      }
+                <div class="p-6 flex-1 flex flex-col">
+                  <div class="flex justify-between items-start mb-2">
+                    <h3 class="font-heading text-2xl text-text-primary m-0">{{ event.coupleNames || event.name }}</h3>
+                    <app-badge [status]="event.status === 'Published' ? 'published' : 'draft'">{{ event.status }}</app-badge>
+                  </div>
+                  <p class="text-text-secondary text-sm mb-4">{{ event.eventDate | date }}</p>
+                  
+                  <p class="text-text-secondary text-sm mb-6 flex-1">
+                    {{ event.guestCount || 0 }} guests &middot; {{ (event.confirmedRsvps || 0) + (event.pendingRsvps || 0) + (event.declinedRsvps || 0) }} RSVPs
+                  </p>
+                  
+                  <div class="mt-auto grid grid-cols-2 gap-3">
+                    <app-button [routerLink]="['/events', event.slug, 'edit']" variant="primary" icon="fa-solid fa-pencil">Edit</app-button>
+                    <app-button [routerLink]="['/events', event.slug, 'guests']" variant="secondary">Guests</app-button>
+                    <app-button [routerLink]="['/events', event.slug, 'dashboard']" variant="secondary">Stats</app-button>
+                    
+                    @if (event.status === 'Published' && event.micrositeUrl) {
+                      <app-button variant="secondary" (onClick)="openMicrosite(event.micrositeUrl)">View Site</app-button>
+                      <app-button variant="secondary" (onClick)="regenerateMicrosite(event)">Regen Site</app-button>
+                    }
+                    @if (event.status === 'Draft') {
+                      <app-button variant="primary" icon="fa-solid fa-rocket" (onClick)="openPublishDialog(event)">Publish</app-button>
+                    }
+                  </div>
+                </div>
+              </app-card>
+            }
+          </div>
+        }
 
-      <app-publish-dialog 
-        *ngIf="selectedEventToPublish"
-        [eventSlug]="selectedEventToPublish.slug"
-        (close)="selectedEventToPublish = null"
-        (published)="onPublished()">
-      </app-publish-dialog>
+        <app-publish-dialog 
+          *ngIf="selectedEventToPublish"
+          [eventSlug]="selectedEventToPublish.slug"
+          (close)="selectedEventToPublish = null"
+          (published)="onPublished()">
+        </app-publish-dialog>
+      </div>
     </div>
   `
 })
@@ -103,7 +106,7 @@ export default class DashboardPage implements OnInit {
 
   onPublished() {
     this.selectedEventToPublish = null;
-    this.ngOnInit(); // Refresh list to see updated status
+    this.ngOnInit();
   }
 
   regenerateMicrosite(event: EventResponse) {
@@ -117,4 +120,9 @@ export default class DashboardPage implements OnInit {
       }
     });
   }
+
+  openMicrosite(url: string) {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
 }
+

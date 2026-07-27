@@ -1,9 +1,4 @@
-# frontend-shell-components
-
-## Purpose
-TBD - Shared Shell UI Components
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Shared UI Components
 The system SHALL provide shared UI components (`ButtonComponent`, `InputComponent`, `CardComponent`, `BadgeComponent`, `EmptyStateComponent`, `NavbarComponent`) that adhere to the Aura style guide. These components SHALL rely strictly on design tokens (e.g., CSS variables or Tailwind classes like `bg-primary`, `rounded-lg`) and MUST NOT use hardcoded color values.
@@ -19,10 +14,3 @@ The system SHALL provide shared UI components (`ButtonComponent`, `InputComponen
 #### Scenario: Card component styling
 - **WHEN** a CardComponent is rendered
 - **THEN** it applies `rounded-lg`, `shadow-md`, `border-light`, and `bg-card-bg` styles.
-
-### Requirement: Global Styles Configuration
-The application SHALL define global CSS custom properties for colors, typography (Playfair Display + Inter), spacing, border-radius, and shadows.
-
-#### Scenario: Style token usage
-- **WHEN** shared components are instantiated
-- **THEN** they consume the global CSS custom properties for their visual presentation.

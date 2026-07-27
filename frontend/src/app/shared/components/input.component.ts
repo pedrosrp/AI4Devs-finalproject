@@ -15,7 +15,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
   ],
   template: `
     <div class="flex flex-col gap-1 w-full">
-      <label *ngIf="label" [for]="id" class="text-sm font-medium text-text-secondary">
+      <label *ngIf="label" [for]="id" class="text-sm font-medium text-text-primary">
         {{ label }}
       </label>
       <input
@@ -27,7 +27,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
         (input)="onInputChange($event)"
         (blur)="onTouched()"
         [ngClass]="{'border-error focus:ring-error focus:border-error': error, 'border-border focus:ring-primary focus:border-primary': !error}"
-        class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 sm:text-sm bg-card-bg text-text-primary transition-colors disabled:opacity-50 disabled:bg-bg-surface"
+        class="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-1 sm:text-sm bg-card-bg text-text-primary transition-colors disabled:opacity-50 disabled:bg-bg-surface"
       />
       <span *ngIf="error" class="text-sm text-error mt-1">{{ error }}</span>
     </div>
