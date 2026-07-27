@@ -84,7 +84,7 @@ public class StripePaymentService : IPaymentService
             ev.PublishedAt = DateTimeOffset.UtcNow;
             await _eventRepository.UpdateAsync(ev, cancellationToken);
 
-            await _queueService.EnqueueAsync("ssg:queue", System.Text.Json.JsonSerializer.Serialize(new { EventId = ev.Id }), cancellationToken);
+            await _queueService.EnqueueAsync("ssg:queue", System.Text.Json.JsonSerializer.Serialize(new { EventId = ev.Id, EventSlug = ev.Slug, EventType = "published" }), cancellationToken);
 
             return "bypass";
         }
@@ -193,7 +193,7 @@ public class StripePaymentService : IPaymentService
             await _eventRepository.UpdateAsync(ev, cancellationToken);
 
             // Trigger SSG job
-            await _queueService.EnqueueAsync("ssg:queue", JsonSerializer.Serialize(new { EventId = ev.Id }), cancellationToken);
+            await _queueService.EnqueueAsync("ssg:queue", JsonSerializer.Serialize(new { EventId = ev.Id, EventSlug = ev.Slug, EventType = "published" }), cancellationToken);
             _logger.LogInformation("Event {EventId} published and SSG job enqueued.", ev.Id);
         }
     }
