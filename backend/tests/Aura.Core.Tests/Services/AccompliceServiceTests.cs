@@ -61,7 +61,7 @@ public class AccompliceServiceTests
         _magicLinkService.HashToken(token).Returns(hashedToken);
 
         // Act
-        var result = await _sut.GrantAccessAsync(eventSlug, request);
+        var result = await _sut.GrantAccessAsync(eventSlug, request, null);
 
         // Assert
         result.Should().NotBeNull();

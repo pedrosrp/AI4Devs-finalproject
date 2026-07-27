@@ -10,5 +10,5 @@ public interface IInvitationService
 {
     Task<IEnumerable<InvitationResponse>> GetInvitationsByEventAsync(string eventSlug, CancellationToken cancellationToken = default);
     Task CreateInvitationsForEventAsync(string eventSlug, CancellationToken cancellationToken = default);
-    Task SendInvitationsAsync(string eventSlug, CancellationToken cancellationToken = default);
+    Task SendInvitationsAsync(string eventSlug, string frontendBaseUrl, CancellationToken cancellationToken = default);
 }

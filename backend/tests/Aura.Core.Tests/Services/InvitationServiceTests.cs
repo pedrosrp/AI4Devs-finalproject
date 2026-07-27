@@ -65,7 +65,7 @@ public class InvitationServiceTests
             .Do(callInfo => enqueuedMessages.Add(callInfo.ArgAt<string>(1)));
 
         // Act
-        await _sut.SendInvitationsAsync("test-event");
+        await _sut.SendInvitationsAsync("test-event", null);
 
         // Assert
         Assert.Equal(2, addedInvitations.Count);
@@ -101,7 +101,7 @@ public class InvitationServiceTests
         _mockInvitationRepository.GetAllAsync(Arg.Any<CancellationToken>()).Returns(new List<Invitation> { existingInv });
 
         // Act
-        await _sut.SendInvitationsAsync("test-event");
+        await _sut.SendInvitationsAsync("test-event", null);
 
         // Assert
         await _mockInvitationRepository.Received(1).AddAsync(Arg.Is<Invitation>(i => i.GuestId == guest2.Id), Arg.Any<CancellationToken>());

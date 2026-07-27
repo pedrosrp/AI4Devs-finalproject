@@ -71,7 +71,7 @@ public class InvitationService : IInvitationService
         await Task.CompletedTask;
     }
 
-    public async Task SendInvitationsAsync(string eventSlug, CancellationToken cancellationToken = default)
+    public async Task SendInvitationsAsync(string eventSlug, string frontendBaseUrl, CancellationToken cancellationToken = default)
     {
         var evt = await _eventRepository.GetBySlugAsync(eventSlug);
         if (evt == null) throw new Exception("Event not found");
@@ -84,6 +84,8 @@ public class InvitationService : IInvitationService
             !string.IsNullOrWhiteSpace(g.Email) && 
             !existingInvitations.Any(i => i.GuestId == g.Id && i.EventId == evt.Id && !i.IsDeleted)
         ).ToList();
+
+        var baseUrl = !string.IsNullOrWhiteSpace(frontendBaseUrl) ? frontendBaseUrl : _frontendBaseUrl;
 
         foreach (var guest in guestsToInvite)
         {
@@ -111,7 +113,7 @@ public class InvitationService : IInvitationService
             await _invitationRepository.AddAsync(invitation, cancellationToken);
 
             // Enqueue email
-            var rsvpLink = $"{_frontendBaseUrl}/rsvp/{plainToken}";
+            var rsvpLink = $"{baseUrl}/rsvp/{plainToken}";
             
             var payload = new EmailMessagePayload
             {

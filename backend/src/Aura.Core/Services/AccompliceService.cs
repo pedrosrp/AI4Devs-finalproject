@@ -38,7 +38,7 @@ public class AccompliceService : IAccompliceService
         _logger = logger;
     }
 
-    public async Task<AccompliceResponse> GrantAccessAsync(string eventSlug, GrantAccessRequest request, CancellationToken cancellationToken = default)
+    public async Task<AccompliceResponse> GrantAccessAsync(string eventSlug, GrantAccessRequest request, string frontendBaseUrl, CancellationToken cancellationToken = default)
     {
         var @event = await _eventRepository.GetBySlugAsync(eventSlug);
         if (@event == null)
@@ -61,7 +61,7 @@ public class AccompliceService : IAccompliceService
 
         await _accompliceRepository.AddAsync(accomplice, cancellationToken);
 
-        await EnqueueMagicLinkEmailAsync(accomplice.Email, token, cancellationToken);
+        await EnqueueMagicLinkEmailAsync(accomplice.Email, token, frontendBaseUrl, cancellationToken);
 
         return MapToResponse(accomplice);
     }
@@ -76,7 +76,7 @@ public class AccompliceService : IAccompliceService
         await _accompliceRepository.UpdateAsync(accomplice, cancellationToken);
     }
 
-    public async Task ResendMagicLinkAsync(Guid accompliceId, CancellationToken cancellationToken = default)
+    public async Task ResendMagicLinkAsync(Guid accompliceId, string frontendBaseUrl, CancellationToken cancellationToken = default)
     {
         var accomplice = await _accompliceRepository.GetByIdAsync(accompliceId, cancellationToken);
         if (accomplice == null)
@@ -90,7 +90,7 @@ public class AccompliceService : IAccompliceService
         
         await _accompliceRepository.UpdateAsync(accomplice, cancellationToken);
 
-        await EnqueueMagicLinkEmailAsync(accomplice.Email, token, cancellationToken);
+        await EnqueueMagicLinkEmailAsync(accomplice.Email, token, frontendBaseUrl, cancellationToken);
     }
 
     public async Task<IEnumerable<AccompliceResponse>> GetAccomplicesByEventAsync(string eventSlug, CancellationToken cancellationToken = default)
@@ -157,10 +157,10 @@ public class AccompliceService : IAccompliceService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private async Task EnqueueMagicLinkEmailAsync(string email, string token, CancellationToken cancellationToken)
+    private async Task EnqueueMagicLinkEmailAsync(string email, string token, string frontendBaseUrl, CancellationToken cancellationToken)
     {
-        var frontendUrl = _configuration["FrontendBaseUrl"] ?? "http://localhost:4200";
-        var magicLink = $"{frontendUrl}/accomplice/{token}";
+        var baseUrl = !string.IsNullOrWhiteSpace(frontendBaseUrl) ? frontendBaseUrl : _configuration["FrontendBaseUrl"] ?? "http://localhost:4200";
+        var magicLink = $"{baseUrl}/accomplice/{token}";
         
         var payload = new
         {

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Aura.Core.Interfaces.Services;
@@ -30,7 +31,11 @@ public class InvitationsController : ControllerBase
     [HttpPost("send")]
     public async Task<IActionResult> SendInvitations(string slug, [FromBody] SendInvitationsRequest request, CancellationToken cancellationToken)
     {
-        await _invitationService.SendInvitationsAsync(slug, cancellationToken);
+        var scheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
+        var host = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.Value;
+        var frontendBaseUrl = $"{scheme}://{host}";
+
+        await _invitationService.SendInvitationsAsync(slug, frontendBaseUrl, cancellationToken);
         return Ok(new { message = "Invitations successfully enqueued for sending." });
     }
 }

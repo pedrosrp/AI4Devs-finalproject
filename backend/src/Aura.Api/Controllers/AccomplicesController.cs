@@ -1,3 +1,4 @@
+using System.Linq;
 using Aura.Core.DTOs.Accomplices;
 using Aura.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +29,11 @@ public class AccomplicesController : ControllerBase
     [Authorize(Policy = "HostScoped")]
     public async Task<IActionResult> GrantAccess(string eventSlug, [FromBody] GrantAccessRequest request, CancellationToken cancellationToken)
     {
-        var response = await _accompliceService.GrantAccessAsync(eventSlug, request, cancellationToken);
+        var scheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
+        var host = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.Value;
+        var frontendBaseUrl = $"{scheme}://{host}";
+
+        var response = await _accompliceService.GrantAccessAsync(eventSlug, request, frontendBaseUrl, cancellationToken);
         return Ok(response);
     }
 
@@ -44,7 +49,11 @@ public class AccomplicesController : ControllerBase
     [Authorize(Policy = "HostScoped")]
     public async Task<IActionResult> ResendMagicLink(string eventSlug, Guid accompliceId, CancellationToken cancellationToken)
     {
-        await _accompliceService.ResendMagicLinkAsync(accompliceId, cancellationToken);
+        var scheme = Request.Headers["X-Forwarded-Proto"].FirstOrDefault() ?? Request.Scheme;
+        var host = Request.Headers["X-Forwarded-Host"].FirstOrDefault() ?? Request.Host.Value;
+        var frontendBaseUrl = $"{scheme}://{host}";
+
+        await _accompliceService.ResendMagicLinkAsync(accompliceId, frontendBaseUrl, cancellationToken);
         return Ok();
     }
 
