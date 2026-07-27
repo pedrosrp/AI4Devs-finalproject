@@ -1,9 +1,11 @@
+using Aura.Core.Configuration;
 using Aura.Core.Enums;
 using Aura.Core.Exceptions;
 using Aura.Core.Interfaces.Repositories;
 using Aura.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace Aura.Api.Controllers;
 
@@ -13,11 +15,19 @@ public class PaymentsController : ControllerBase
 {
     private readonly IPaymentService _paymentService;
     private readonly IEventRepository _eventRepository;
+    private readonly StripeOptions _stripeOptions;
 
-    public PaymentsController(IPaymentService paymentService, IEventRepository eventRepository)
+    public PaymentsController(IPaymentService paymentService, IEventRepository eventRepository, IOptions<StripeOptions> stripeOptions)
     {
         _paymentService = paymentService;
         _eventRepository = eventRepository;
+        _stripeOptions = stripeOptions.Value;
+    }
+
+    [HttpGet("payments/config")]
+    public IActionResult GetConfig()
+    {
+        return Ok(new { publishableKey = _stripeOptions.PublishableKey });
     }
 
     [Authorize]

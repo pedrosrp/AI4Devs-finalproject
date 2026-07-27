@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output, OnInit, OnDestroy, ViewChild, E
 import { CommonModule } from '@angular/common';
 import { PaymentService } from '../../../../core/services/payment.service';
 import { loadStripe, Stripe, StripeElements, StripePaymentElement } from '@stripe/stripe-js';
-import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-publish-dialog',
@@ -34,7 +33,14 @@ export class PublishDialogComponent implements OnInit, AfterViewInit, OnDestroy 
   ) {}
 
   async ngOnInit() {
-    this.stripe = await loadStripe(environment.stripePublishableKey);
+    this.paymentService.getConfig().subscribe({
+      next: async (config) => {
+        this.stripe = await loadStripe(config.publishableKey);
+      },
+      error: () => {
+        this.error = 'Failed to load payment configuration.';
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -85,7 +91,8 @@ export class PublishDialogComponent implements OnInit, AfterViewInit, OnDestroy 
 
     this.elements = this.stripe.elements({
       clientSecret: this.clientSecret,
-      appearance: { theme: 'stripe' }
+      appearance: { theme: 'stripe' },
+      paymentMethodTypes: ['card']
     });
 
     this.paymentElement = this.elements.create('payment');

@@ -52,47 +52,14 @@ public class StripePaymentService : IPaymentService
         
         if (string.IsNullOrEmpty(_options.SecretKey))
         {
-            _logger.LogWarning("Stripe SecretKey is not configured. Bypassing payment for event {EventId}.", eventId);
-            var existingPayment = await _paymentRepository.GetByEventIdAsync(eventId, cancellationToken);
-            if (existingPayment != null)
-            {
-                existingPayment.StripePaymentIntentId = "bypass_" + Guid.NewGuid().ToString();
-                existingPayment.Amount = amountInCents / 100m;
-                existingPayment.Currency = "EUR";
-                existingPayment.Status = PaymentStatus.Succeeded;
-                existingPayment.Tier = tier;
-                existingPayment.CompletedAt = DateTimeOffset.UtcNow;
-                
-                await _paymentRepository.UpdateAsync(existingPayment, cancellationToken);
-            }
-            else
-            {
-                var bypassPayment = new Payment
-                {
-                    EventId = eventId,
-                    StripePaymentIntentId = "bypass_" + Guid.NewGuid().ToString(),
-                    Amount = amountInCents / 100m,
-                    Currency = "EUR",
-                    Status = PaymentStatus.Succeeded,
-                    Tier = tier,
-                    CompletedAt = DateTimeOffset.UtcNow
-                };
-                await _paymentRepository.AddAsync(bypassPayment, cancellationToken);
-            }
-
-            ev.Status = EventStatus.Published;
-            ev.PublishedAt = DateTimeOffset.UtcNow;
-            await _eventRepository.UpdateAsync(ev, cancellationToken);
-
-            await _queueService.EnqueueAsync("ssg:queue", System.Text.Json.JsonSerializer.Serialize(new { EventId = ev.Id, EventSlug = ev.Slug, EventType = "published" }), cancellationToken);
-
-            return "bypass";
+            throw new InvalidOperationException("Stripe SecretKey is not configured. Payment processing is unavailable.");
         }
 
         var options = new PaymentIntentCreateOptions
         {
             Amount = amountInCents,
             Currency = "eur",
+            PaymentMethodTypes = new List<string> { "card" },
             Metadata = new Dictionary<string, string>
             {
                 { "EventId", eventId.ToString() },

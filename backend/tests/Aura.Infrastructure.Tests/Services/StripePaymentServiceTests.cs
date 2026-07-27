@@ -73,6 +73,28 @@ public class StripePaymentServiceTests
             _sut.CreatePaymentIntentAsync(eventId, PaymentTier.Standard));
     }
 
+    [Fact]
+    public async Task CreatePaymentIntentAsync_MissingSecretKey_ThrowsInvalidOperationException()
+    {
+        // Arrange
+        var eventId = Guid.NewGuid();
+        var ev = new Core.Models.Event { Id = eventId, Status = EventStatus.Draft };
+        _eventRepository.GetByIdAsync(eventId, Arg.Any<CancellationToken>())
+            .Returns(ev);
+
+        var options = Microsoft.Extensions.Options.Options.Create(new StripeOptions());
+        var sut = new StripePaymentService(
+            _paymentRepository,
+            _eventRepository,
+            _queueService,
+            options,
+            _logger);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            sut.CreatePaymentIntentAsync(eventId, PaymentTier.Standard));
+    }
+
     // Since CreatePaymentIntentAsync calls Stripe APIs, it's hard to test fully without mocking Stripe, 
     // but we can test the exceptions. For signature validation, it also throws StripeException.
     

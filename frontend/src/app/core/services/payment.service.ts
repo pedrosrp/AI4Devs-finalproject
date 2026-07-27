@@ -11,6 +11,10 @@ export interface PublishEventResponse {
   clientSecret: string;
 }
 
+export interface PaymentConfigResponse {
+  publishableKey: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,6 +22,10 @@ export class PaymentService {
   private apiUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) {}
+
+  getConfig(): Observable<PaymentConfigResponse> {
+    return this.http.get<PaymentConfigResponse>(`${this.apiUrl}/payments/config`);
+  }
 
   publishEvent(slug: string, tier: number): Observable<PublishEventResponse> {
     return this.http.post<PublishEventResponse>(`${this.apiUrl}/events/${slug}/publish`, { tier });
