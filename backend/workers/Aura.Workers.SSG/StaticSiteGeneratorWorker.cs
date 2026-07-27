@@ -43,7 +43,11 @@ public class StaticSiteGeneratorWorker : BackgroundService
                 }
 
                 var payloadJson = result.ToString();
-                var payload = JsonSerializer.Deserialize<SsgQueuePayload>(payloadJson, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+                var payload = JsonSerializer.Deserialize<SsgQueuePayload>(payloadJson, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    PropertyNameCaseInsensitive = true
+                });
 
                 if (payload != null)
                 {
