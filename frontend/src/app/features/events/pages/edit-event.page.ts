@@ -10,6 +10,8 @@ import { TemplateService } from '../../../core/services/template.service';
 import { EventResponse } from '../../../core/models/event.model';
 import { Template } from '../../../core/models/template.model';
 
+export type EditTab = 'details' | 'design' | 'hero' | 'post-event' | 'actions';
+
 @Component({
   selector: 'app-edit-event-page',
   standalone: true,
@@ -26,7 +28,9 @@ export default class EditEventPage implements OnInit, OnDestroy {
   eventSlug = signal<string>('');
   eventData = signal<EventResponse | null>(null);
   templates = signal<Template[]>([]);
-  
+
+  activeTab = signal<EditTab>('details');
+
   // Save state: 'saved' | 'saving' | 'unsaved' | 'error'
   saveState = signal<'saved' | 'saving' | 'unsaved' | 'error'>('saved');
   errorMessage = signal<string | null>(null);
@@ -38,8 +42,21 @@ export default class EditEventPage implements OnInit, OnDestroy {
   // We use a Subject to push form values and debounce them before saving
   private autoSaveSubject = new Subject<any>();
 
+  readonly tabs: { id: EditTab; label: string }[] = [
+    { id: 'details', label: 'Details' },
+    { id: 'design', label: 'Design' },
+    { id: 'hero', label: 'Hero' },
+    { id: 'post-event', label: 'Post-Event' },
+    { id: 'actions', label: 'Actions' }
+  ];
+
   constructor() {
     this.editorForm = this.fb.group({
+      coupleNames: ['', Validators.required],
+      name: ['', Validators.required],
+      eventDate: ['', Validators.required],
+      venueName: ['', Validators.required],
+      venueAddress: ['', Validators.required],
       templateId: ['', Validators.required],
       primaryColor: ['#000000', Validators.required],
       secondaryColor: ['#ffffff', Validators.required],
@@ -56,17 +73,8 @@ export default class EditEventPage implements OnInit, OnDestroy {
       switchMap(formValues => {
         const currentEvent = this.eventData();
         if (!currentEvent) return of(null);
-        
-        const updateRequest = {
-          name: currentEvent.name,
-          coupleNames: currentEvent.coupleNames,
-          eventDate: currentEvent.eventDate,
-          venueName: currentEvent.venueName,
-          venueAddress: currentEvent.venueAddress,
-          ...formValues
-        };
-        
-        return this.eventService.updateEvent(this.eventSlug(), updateRequest).pipe(
+
+        return this.eventService.updateEvent(this.eventSlug(), this.buildUpdateRequest(formValues)).pipe(
           catchError(err => {
             console.error('Auto-save failed', err);
             this.saveState.set('error');
@@ -83,7 +91,7 @@ export default class EditEventPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadTemplates();
-    
+
     this.route.paramMap.subscribe(params => {
       const slug = params.get('slug');
       if (slug) {
@@ -94,8 +102,6 @@ export default class EditEventPage implements OnInit, OnDestroy {
 
     // Track form changes for UI unsaved state and triggering auto-save
     this.formChangeSub = this.editorForm.valueChanges.subscribe(values => {
-      // Don't mark unsaved if we are currently saving or saved recently, 
-      // but to keep it simple, whenever user types, it's unsaved.
       if (this.editorForm.valid) {
         this.saveState.set('unsaved');
         this.autoSaveSubject.next(values);
@@ -121,23 +127,42 @@ export default class EditEventPage implements OnInit, OnDestroy {
     return this.saveState() === 'unsaved' || this.saveState() === 'saving';
   }
 
+  setActiveTab(tab: EditTab) {
+    this.activeTab.set(tab);
+  }
+
+  private buildUpdateRequest(formValues: any): any {
+    return {
+      ...formValues,
+      eventDate: this.toIsoDateTime(formValues.eventDate)
+    };
+  }
+
+  private toDateInputValue(isoDate: string | null | undefined): string {
+    if (!isoDate) return '';
+    const date = new Date(isoDate);
+    if (isNaN(date.getTime())) return '';
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  private toIsoDateTime(dateInputValue: string | null | undefined): string {
+    if (!dateInputValue) return '';
+    const date = new Date(dateInputValue);
+    if (isNaN(date.getTime())) return '';
+    return date.toISOString();
+  }
+
   forceSave(): import('rxjs').Observable<any> {
     const currentEvent = this.eventData();
     if (!currentEvent) return of(true);
-    
+
     const formValues = this.editorForm.value;
-    const updateRequest = {
-      name: currentEvent.name,
-      coupleNames: currentEvent.coupleNames,
-      eventDate: currentEvent.eventDate,
-      venueName: currentEvent.venueName,
-      venueAddress: currentEvent.venueAddress,
-      ...formValues
-    };
-    
-    return this.eventService.updateEvent(this.eventSlug(), updateRequest).pipe(
+    return this.eventService.updateEvent(this.eventSlug(), this.buildUpdateRequest(formValues)).pipe(
       tap(() => this.saveState.set('saved')),
-      catchError(() => of(true)) // allow navigation even if it fails, or handle differently
+      catchError(() => of(true))
     );
   }
 
@@ -146,8 +171,21 @@ export default class EditEventPage implements OnInit, OnDestroy {
   }
 
   publishEvent() {
-    // In a real implementation this would open the publish dialog similar to the dashboard
+    const event = this.eventData();
+    if (!event) return;
     alert('Please go to the dashboard to publish your event.');
+  }
+
+  regenerateMicrosite() {
+    const slug = this.eventSlug();
+    if (!slug) return;
+    this.eventService.regenerateMicrosite(slug).subscribe({
+      next: () => alert('Microsite regenerated successfully.'),
+      error: (err) => {
+        console.error('Failed to regenerate microsite', err);
+        alert('Failed to regenerate microsite.');
+      }
+    });
   }
 
   private loadTemplates() {
@@ -162,6 +200,11 @@ export default class EditEventPage implements OnInit, OnDestroy {
       next: (event) => {
         this.eventData.set(event);
         this.editorForm.patchValue({
+          coupleNames: event.coupleNames || '',
+          name: event.name || '',
+          eventDate: this.toDateInputValue(event.eventDate),
+          venueName: event.venueName || '',
+          venueAddress: event.venueAddress || '',
           templateId: event.templateId || '',
           primaryColor: event.primaryColor || '#000000',
           secondaryColor: event.secondaryColor || '#ffffff',
@@ -169,7 +212,7 @@ export default class EditEventPage implements OnInit, OnDestroy {
           heroImageUrl: event.heroImageUrl || '',
           thankYouMessage: event.thankYouMessage || '',
           photoGalleryUrl: event.photoGalleryUrl || ''
-        }, { emitEvent: false }); // Don't trigger auto-save on initial load
+        }, { emitEvent: false });
       },
       error: (err) => {
         this.errorMessage.set('Event not found or access denied.');
@@ -238,5 +281,17 @@ export default class EditEventPage implements OnInit, OnDestroy {
     const id = this.editorForm.get('templateId')?.value;
     const tpl = this.templates().find(t => t.id === id);
     return tpl ? tpl.name : 'Default';
+  }
+
+  getPreviewHeroImage(): string {
+    return this.editorForm.get('heroImageUrl')?.value;
+  }
+
+  getPreviewEventDate(): string {
+    const dateInput = this.editorForm.get('eventDate')?.value;
+    if (!dateInput) return 'Event Date';
+    const date = new Date(dateInput);
+    if (isNaN(date.getTime())) return 'Event Date';
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   }
 }
