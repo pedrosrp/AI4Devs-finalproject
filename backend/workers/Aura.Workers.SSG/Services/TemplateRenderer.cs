@@ -21,6 +21,7 @@ public class TemplateRenderer
         {
             "modern minimal" => "modern",
             "rustic charm" => "rustic",
+            "premium gold" => "premium",
             _ => "classic"
         };
 
