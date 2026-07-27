@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Aura.Api.Controllers;
 using Aura.Core.DTOs.Events;
 using Aura.Core.Interfaces.Services;
+using Aura.Core.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
@@ -17,7 +18,8 @@ public class EventsControllerTests
         // Arrange
         var eventService = Substitute.For<IEventService>();
         var objectStorageService = Substitute.For<IObjectStorageService>();
-        var sut = new EventsController(eventService);
+        var queueService = Substitute.For<IQueueService>();
+        var sut = new EventsController(eventService, queueService);
 
         // Act
         var result = await sut.UploadHeroImage("slug", null, objectStorageService);
@@ -33,7 +35,8 @@ public class EventsControllerTests
         // Arrange
         var eventService = Substitute.For<IEventService>();
         var objectStorageService = Substitute.For<IObjectStorageService>();
-        var sut = new EventsController(eventService);
+        var queueService = Substitute.For<IQueueService>();
+        var sut = new EventsController(eventService, queueService);
 
         var file = Substitute.For<IFormFile>();
         file.Length.Returns((5 * 1024 * 1024) + 1); // 5MB + 1 byte
@@ -52,7 +55,8 @@ public class EventsControllerTests
         // Arrange
         var eventService = Substitute.For<IEventService>();
         var objectStorageService = Substitute.For<IObjectStorageService>();
-        var sut = new EventsController(eventService);
+        var queueService = Substitute.For<IQueueService>();
+        var sut = new EventsController(eventService, queueService);
 
         var file = Substitute.For<IFormFile>();
         file.Length.Returns(1024);
@@ -72,7 +76,8 @@ public class EventsControllerTests
         // Arrange
         var eventService = Substitute.For<IEventService>();
         var objectStorageService = Substitute.For<IObjectStorageService>();
-        var sut = new EventsController(eventService);
+        var queueService = Substitute.For<IQueueService>();
+        var sut = new EventsController(eventService, queueService);
 
         var file = Substitute.For<IFormFile>();
         file.Length.Returns(1024);
@@ -99,7 +104,8 @@ public class EventsControllerTests
         // Arrange
         var eventService = Substitute.For<IEventService>();
         var objectStorageService = Substitute.For<IObjectStorageService>();
-        var sut = new EventsController(eventService);
+        var queueService = Substitute.For<IQueueService>();
+        var sut = new EventsController(eventService, queueService);
 
         var file = Substitute.For<IFormFile>();
         file.Length.Returns(1024);

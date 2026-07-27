@@ -3,6 +3,7 @@ using Aura.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace Aura.Api.Controllers;
 
@@ -12,10 +13,12 @@ namespace Aura.Api.Controllers;
 public class EventsController : ControllerBase
 {
     private readonly IEventService _eventService;
+    private readonly IQueueService _queueService;
 
-    public EventsController(IEventService eventService)
+    public EventsController(IEventService eventService, IQueueService queueService)
     {
         _eventService = eventService;
+        _queueService = queueService;
     }
 
     [HttpPost]
@@ -120,6 +123,12 @@ public class EventsController : ControllerBase
         var objectName = $"{slug}/hero{extension}";
         await objectStorageService.UploadFileAsync("static-sites", objectName, stream, file.ContentType);
         var url = $"/e/{slug}/hero{extension}";
+
+        // Queue microsite regeneration so the published site picks up the new hero image.
+        if (ev.Status == Aura.Core.Enums.EventStatus.Published)
+        {
+            await _queueService.EnqueueAsync("ssg:queue", JsonSerializer.Serialize(new { ev.Id, Slug = slug, EventType = "updated" }));
+        }
 
         // Ideally we should update the database here, but the frontend will also call PUT to save all state.
         // Just in case, we could do a partial update, but EventService doesn't have it.
