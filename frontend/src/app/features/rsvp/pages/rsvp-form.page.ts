@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RsvpService, RsvpInfoResponse, SubmitRsvpRequest } from '../../../core/services/rsvp.service';
 
+import { ChangeDetectorRef } from '@angular/core';
+
 @Component({
   selector: 'app-rsvp-form-page',
   standalone: true,
@@ -145,7 +147,7 @@ export class RsvpFormPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private rsvpService: RsvpService,
-    private cdr: import('@angular/core').ChangeDetectorRef
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
