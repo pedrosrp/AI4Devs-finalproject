@@ -19,6 +19,7 @@ export interface EventResponse {
   declinedRsvps: number;
   thankYouMessage?: string;
   photoGalleryUrl?: string;
+  micrositeUrl?: string;
 }
 
 export interface CreateEventRequest {

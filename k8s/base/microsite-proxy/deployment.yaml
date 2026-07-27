@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aura-microsite-proxy
+  labels:
+    app: aura-microsite-proxy
+spec:
+  selector:
+    matchLabels:
+      app: aura-microsite-proxy
+  template:
+    metadata:
+      labels:
+        app: aura-microsite-proxy
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/conf.d
+              readOnly: true
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+      volumes:
+        - name: config
+          configMap:
+            name: aura-microsite-proxy-config

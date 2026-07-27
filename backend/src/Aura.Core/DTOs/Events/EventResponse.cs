@@ -24,4 +24,5 @@ public class EventResponse
     public int PendingRsvps { get; set; }
     public int ConfirmedRsvps { get; set; }
     public int DeclinedRsvps { get; set; }
+    public string? MicrositeUrl { get; set; }
 }

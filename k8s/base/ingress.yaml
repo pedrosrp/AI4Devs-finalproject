@@ -16,6 +16,13 @@ spec:
                 name: aura-api
                 port:
                   number: 80
+          - path: /e
+            pathType: Prefix
+            backend:
+              service:
+                name: aura-microsite-proxy
+                port:
+                  number: 80
           - path: /
             pathType: Prefix
             backend:

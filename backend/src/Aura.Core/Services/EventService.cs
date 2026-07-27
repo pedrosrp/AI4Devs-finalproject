@@ -3,6 +3,7 @@ using Aura.Core.Models;
 using Aura.Core.Enums;
 using Aura.Core.Interfaces.Repositories;
 using Aura.Core.Interfaces.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace Aura.Core.Services;
 
@@ -12,17 +13,20 @@ public class EventService : IEventService
     private readonly ISlugGenerator _slugGenerator;
     private readonly IDataRetentionJobRepository _jobRepository;
     private readonly IMessageTemplateService _messageTemplateService;
-    
+    private readonly string _micrositeBaseUrl;
+
     public EventService(
         IEventRepository eventRepository,
         ISlugGenerator slugGenerator,
         IDataRetentionJobRepository jobRepository,
-        IMessageTemplateService messageTemplateService)
+        IMessageTemplateService messageTemplateService,
+        IConfiguration configuration)
     {
         _eventRepository = eventRepository;
         _slugGenerator = slugGenerator;
         _jobRepository = jobRepository;
         _messageTemplateService = messageTemplateService;
+        _micrositeBaseUrl = configuration["MicrositeBaseUrl"] ?? "http://localhost:4200/e";
     }
 
     public async Task<EventResponse> CreateEventAsync(Guid userId, CreateEventRequest request)
@@ -163,7 +167,8 @@ public class EventService : IEventService
             GuestCount = ev.Guests?.Count ?? 0,
             PendingRsvps = ev.Guests?.Count(g => g.Invitations == null || !g.Invitations.Any() || g.Invitations.Any(i => i.Rsvp == null || i.Rsvp.Attendance == RsvpAttendance.Maybe)) ?? 0,
             ConfirmedRsvps = ev.Guests?.Count(g => g.Invitations != null && g.Invitations.Any(i => i.Rsvp != null && i.Rsvp.Attendance == RsvpAttendance.Yes)) ?? 0,
-            DeclinedRsvps = ev.Guests?.Count(g => g.Invitations != null && g.Invitations.Any(i => i.Rsvp != null && i.Rsvp.Attendance == RsvpAttendance.No)) ?? 0
+            DeclinedRsvps = ev.Guests?.Count(g => g.Invitations != null && g.Invitations.Any(i => i.Rsvp != null && i.Rsvp.Attendance == RsvpAttendance.No)) ?? 0,
+            MicrositeUrl = ev.Status == EventStatus.Published ? $"{_micrositeBaseUrl.TrimEnd('/')}/{ev.Slug}" : null
         };
     }
 }
