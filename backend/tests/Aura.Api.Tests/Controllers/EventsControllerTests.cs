@@ -112,8 +112,8 @@ public class EventsControllerTests
         sut.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
         eventService.GetEventBySlugAsync("test-event", userId).Returns(new EventResponse { Slug = "test-event" });
-        objectStorageService.UploadFileAsync("uploads", Arg.Any<string>(), Arg.Any<Stream>(), "image/jpeg")
-            .Returns(Task.FromResult("/uploads/events/test-event/hero.jpg"));
+        objectStorageService.UploadFileAsync("static-sites", "test-event/hero.jpg", Arg.Any<Stream>(), "image/jpeg")
+            .Returns(Task.FromResult("/static-sites/test-event/hero.jpg"));
 
         // Act
         var result = await sut.UploadHeroImage("test-event", file, objectStorageService);
@@ -124,6 +124,6 @@ public class EventsControllerTests
         Assert.NotNull(value);
         var urlProperty = value.GetType().GetProperty("url");
         Assert.NotNull(urlProperty);
-        Assert.Equal("/uploads/events/test-event/hero.jpg", urlProperty.GetValue(value));
+        Assert.Equal("/e/test-event/hero.jpg", urlProperty.GetValue(value));
     }
 }
