@@ -3898,6 +3898,239 @@
           ]
         }
       ]
+    },
+    {
+      "type": "frame",
+      "id": "I4BcC",
+      "x": 1280,
+      "y": 1560,
+      "name": "Email Template - Magic Link",
+      "clip": true,
+      "width": 700,
+      "height": 660,
+      "fill": "$bg-cream",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "tklZu",
+          "layoutPosition": "absolute",
+          "x": 50,
+          "y": 48,
+          "name": "Email Card",
+          "width": 600,
+          "fill": "$card-bg",
+          "cornerRadius": "$radius-lg",
+          "effect": {
+            "type": "shadow",
+            "shadowType": "outer",
+            "color": "$shadow-md",
+            "offset": {
+              "x": 0,
+              "y": 8
+            },
+            "blur": 24
+          },
+          "layout": "vertical",
+          "gap": 32,
+          "padding": 48,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "C5KR4l",
+              "name": "Email Header",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "ellipse",
+                  "id": "RURfG",
+                  "name": "Logo Mark",
+                  "fill": "$primary",
+                  "width": 48,
+                  "height": 48
+                },
+                {
+                  "type": "text",
+                  "id": "US8cX",
+                  "name": "Brand Name",
+                  "fill": "$text-primary",
+                  "content": "Aura",
+                  "fontFamily": "$font-heading",
+                  "fontSize": 24,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "KLMsx",
+              "name": "Email Title",
+              "fill": "$text-primary",
+              "textGrowth": "fixed-width",
+              "width": 504,
+              "content": "Welcome to Aura",
+              "lineHeight": 1.2,
+              "textAlign": "center",
+              "fontFamily": "$font-heading",
+              "fontSize": 32,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "TJtB4",
+              "name": "Email Body",
+              "width": 504,
+              "layout": "vertical",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "aVT7X",
+                  "name": "Email Message",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 504,
+                  "content": "Click the button below to log in to your account. This magic link is secure and expires in 15 minutes.",
+                  "lineHeight": 1.5,
+                  "textAlign": "center",
+                  "fontFamily": "$font-body",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "Lwbk2",
+                  "name": "Email CTA Button",
+                  "fill": "$primary",
+                  "cornerRadius": "$radius-sm",
+                  "gap": 8,
+                  "padding": [
+                    14,
+                    32
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "Quo9M",
+                      "name": "Button Icon",
+                      "width": 18,
+                      "height": 18,
+                      "icon": "arrow-right",
+                      "library": "lucide",
+                      "fill": "#FFFFFF"
+                    },
+                    {
+                      "type": "text",
+                      "id": "p4RkRb",
+                      "name": "Button Label",
+                      "fill": "#FFFFFF",
+                      "content": "Log In to Aura",
+                      "fontFamily": "$font-body",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "sgmwC",
+                  "name": "Email Fallback",
+                  "width": 504,
+                  "layout": "vertical",
+                  "gap": 8,
+                  "padding": [
+                    16,
+                    0
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "C4frRI",
+                      "name": "Fallback Text",
+                      "fill": "$text-muted",
+                      "textGrowth": "fixed-width",
+                      "width": 504,
+                      "content": "If the button doesn't work, copy and paste this link into your browser:",
+                      "lineHeight": 1.4,
+                      "textAlign": "center",
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "cSB3o",
+                      "name": "Fallback Link",
+                      "fill": "$accent",
+                      "textGrowth": "fixed-width",
+                      "width": 504,
+                      "content": "https://aura.planning/verify?token=your-secure-magic-link",
+                      "lineHeight": 1.4,
+                      "textAlign": "center",
+                      "fontFamily": "$font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ReRSi",
+              "name": "Email Divider",
+              "width": 504,
+              "height": 1,
+              "fill": "$border"
+            },
+            {
+              "type": "frame",
+              "id": "t2vQDX",
+              "name": "Email Footer",
+              "width": 504,
+              "layout": "vertical",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "R7Fv22",
+                  "name": "Footer Message",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 504,
+                  "content": "If you didn't request this email, you can safely ignore it.",
+                  "lineHeight": 1.4,
+                  "textAlign": "center",
+                  "fontFamily": "$font-body",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "nwA1C",
+                  "name": "Footer Copyright",
+                  "fill": "$text-muted",
+                  "textGrowth": "fixed-width",
+                  "width": 504,
+                  "content": "© 2026 Aura Planning. All rights reserved.",
+                  "lineHeight": 1.4,
+                  "textAlign": "center",
+                  "fontFamily": "$font-body",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ],
   "variables": {
