@@ -67,6 +67,7 @@ jobs:
           echo "Smtp__Port=587" >> k8s/overlays/production/.env.production
           echo "Smtp__Username=${{ secrets.PROD_SMTP_USER }}" >> k8s/overlays/production/.env.production
           echo "Smtp__Password=${{ secrets.PROD_SMTP_PASSWORD }}" >> k8s/overlays/production/.env.production
+          echo "MicrositeBaseUrl=${{ secrets.PROD_MICROSITE_BASE_URL }}" >> k8s/overlays/production/.env.production
           
           # Parse Connection String for PostgreSQL initialization
           DB_CONN="${{ secrets.PROD_DB_CONNECTION }}"

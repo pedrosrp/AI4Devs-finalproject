@@ -5,6 +5,7 @@ using Aura.Core.Interfaces.Services;
 using Aura.Core.Models;
 using Aura.Core.Services;
 using FluentAssertions;
+using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Xunit;
 
@@ -16,6 +17,7 @@ public class EventServiceTests
     private readonly ISlugGenerator _slugGeneratorMock;
     private readonly IDataRetentionJobRepository _jobRepositoryMock;
     private readonly IMessageTemplateService _messageTemplateServiceMock;
+    private readonly IConfiguration _configurationMock;
     private readonly EventService _sut;
 
     public EventServiceTests()
@@ -24,12 +26,15 @@ public class EventServiceTests
         _slugGeneratorMock = Substitute.For<ISlugGenerator>();
         _jobRepositoryMock = Substitute.For<IDataRetentionJobRepository>();
         _messageTemplateServiceMock = Substitute.For<IMessageTemplateService>();
+        _configurationMock = Substitute.For<IConfiguration>();
+        _configurationMock["MicrositeBaseUrl"].Returns("http://localhost:4200/e");
 
         _sut = new EventService(
             _eventRepositoryMock,
             _slugGeneratorMock,
             _jobRepositoryMock,
-            _messageTemplateServiceMock);
+            _messageTemplateServiceMock,
+            _configurationMock);
     }
 
     [Fact]
@@ -86,5 +91,65 @@ public class EventServiceTests
 
         // Assert
         result.Slug.Should().Be("my-wedding-2024-3");
+    }
+
+    [Fact]
+    public async Task GetEventBySlugAsync_WhenEventIsPublished_ShouldReturnMicrositeUrl()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var ev = new Event
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            Name = "My Wedding",
+            Slug = "my-wedding-2024",
+            Status = EventStatus.Published,
+            EventDate = new DateTimeOffset(2024, 10, 10, 0, 0, 0, TimeSpan.Zero),
+            EventEndDate = new DateTimeOffset(2024, 10, 11, 0, 0, 0, TimeSpan.Zero),
+            CoupleNames = "John & Jane",
+            VenueName = "The Venue",
+            VenueAddress = "123 Street",
+            Guests = new List<Guest>()
+        };
+
+        _eventRepositoryMock.GetBySlugAsync("my-wedding-2024").Returns(ev);
+
+        // Act
+        var result = await _sut.GetEventBySlugAsync("my-wedding-2024", userId);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.MicrositeUrl.Should().Be("http://localhost:4200/e/my-wedding-2024");
+    }
+
+    [Fact]
+    public async Task GetEventBySlugAsync_WhenEventIsDraft_ShouldNotReturnMicrositeUrl()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var ev = new Event
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            Name = "My Wedding",
+            Slug = "my-wedding-2024",
+            Status = EventStatus.Draft,
+            EventDate = new DateTimeOffset(2024, 10, 10, 0, 0, 0, TimeSpan.Zero),
+            EventEndDate = new DateTimeOffset(2024, 10, 11, 0, 0, 0, TimeSpan.Zero),
+            CoupleNames = "John & Jane",
+            VenueName = "The Venue",
+            VenueAddress = "123 Street",
+            Guests = new List<Guest>()
+        };
+
+        _eventRepositoryMock.GetBySlugAsync("my-wedding-2024").Returns(ev);
+
+        // Act
+        var result = await _sut.GetEventBySlugAsync("my-wedding-2024", userId);
+
+        // Assert
+        result.Should().NotBeNull();
+        result!.MicrositeUrl.Should().BeNull();
     }
 }

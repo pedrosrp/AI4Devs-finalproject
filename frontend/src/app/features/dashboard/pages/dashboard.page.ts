@@ -45,10 +45,18 @@ import { PublishDialogComponent } from '../components/publish-dialog/publish-dia
                      style="padding: 0.5rem 1rem; border: 1px solid #4f46e5; border-radius: 6px; text-decoration: none; color: #4f46e5; font-weight: 500; font-size: 0.875rem; text-align: center; flex: 1; background-color: #eef2ff;">
                     Stats
                   </a>
-                  <button *ngIf="event.status === 'Draft'" (click)="openPublishDialog(event)" 
-                     style="padding: 0.5rem 1rem; border: 1px solid #10b981; border-radius: 6px; text-decoration: none; color: white; font-weight: 500; font-size: 0.875rem; text-align: center; flex: 1; background-color: #10b981; cursor: pointer;">
-                    Publish
-                  </button>
+                  @if (event.status === 'Published' && event.micrositeUrl) {
+                    <a [href]="event.micrositeUrl" target="_blank" rel="noopener noreferrer"
+                       style="padding: 0.5rem 1rem; border: 1px solid #7C9A72; border-radius: 6px; text-decoration: none; color: white; font-weight: 500; font-size: 0.875rem; text-align: center; flex: 1; background-color: #7C9A72; cursor: pointer;">
+                      View Site
+                    </a>
+                  }
+                  @if (event.status === 'Draft') {
+                    <button (click)="openPublishDialog(event)" 
+                       style="padding: 0.5rem 1rem; border: 1px solid #10b981; border-radius: 6px; text-decoration: none; color: white; font-weight: 500; font-size: 0.875rem; text-align: center; flex: 1; background-color: #10b981; cursor: pointer;">
+                      Publish
+                    </button>
+                  }
                 </div>
               </div>
             </div>

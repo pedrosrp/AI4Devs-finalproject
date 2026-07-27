@@ -10,5 +10,6 @@ data:
   ConnectionStrings__Redis: "aura-dragonfly:6379,abortConnect=false"
   Jwt__Issuer: "AuraPlanning"
   Jwt__Audience: "AuraUsers"
+  MicrositeBaseUrl: "http://localhost/e"
   Smtp__Host: "aura-mailhog"
   Smtp__Port: "1025"
