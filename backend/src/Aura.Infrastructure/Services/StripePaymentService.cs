@@ -53,17 +53,32 @@ public class StripePaymentService : IPaymentService
         if (string.IsNullOrEmpty(_options.SecretKey))
         {
             _logger.LogWarning("Stripe SecretKey is not configured. Bypassing payment for event {EventId}.", eventId);
-            var bypassPayment = new Payment
+            var existingPayment = await _paymentRepository.GetByEventIdAsync(eventId, cancellationToken);
+            if (existingPayment != null)
             {
-                EventId = eventId,
-                StripePaymentIntentId = "bypass_" + Guid.NewGuid().ToString(),
-                Amount = amountInCents / 100m,
-                Currency = "EUR",
-                Status = PaymentStatus.Succeeded,
-                Tier = tier,
-                CompletedAt = DateTimeOffset.UtcNow
-            };
-            await _paymentRepository.AddAsync(bypassPayment, cancellationToken);
+                existingPayment.StripePaymentIntentId = "bypass_" + Guid.NewGuid().ToString();
+                existingPayment.Amount = amountInCents / 100m;
+                existingPayment.Currency = "EUR";
+                existingPayment.Status = PaymentStatus.Succeeded;
+                existingPayment.Tier = tier;
+                existingPayment.CompletedAt = DateTimeOffset.UtcNow;
+                
+                await _paymentRepository.UpdateAsync(existingPayment, cancellationToken);
+            }
+            else
+            {
+                var bypassPayment = new Payment
+                {
+                    EventId = eventId,
+                    StripePaymentIntentId = "bypass_" + Guid.NewGuid().ToString(),
+                    Amount = amountInCents / 100m,
+                    Currency = "EUR",
+                    Status = PaymentStatus.Succeeded,
+                    Tier = tier,
+                    CompletedAt = DateTimeOffset.UtcNow
+                };
+                await _paymentRepository.AddAsync(bypassPayment, cancellationToken);
+            }
 
             ev.Status = EventStatus.Published;
             ev.PublishedAt = DateTimeOffset.UtcNow;
@@ -88,17 +103,30 @@ public class StripePaymentService : IPaymentService
         var service = new PaymentIntentService();
         var paymentIntent = await service.CreateAsync(options, cancellationToken: cancellationToken);
 
-        var payment = new Payment
+        var existingPayment = await _paymentRepository.GetByEventIdAsync(eventId, cancellationToken);
+        if (existingPayment != null)
         {
-            EventId = eventId,
-            StripePaymentIntentId = paymentIntent.Id,
-            Amount = amountInCents / 100m,
-            Currency = "EUR",
-            Status = PaymentStatus.Pending,
-            Tier = tier
-        };
+            existingPayment.StripePaymentIntentId = paymentIntent.Id;
+            existingPayment.Amount = amountInCents / 100m;
+            existingPayment.Tier = tier;
+            existingPayment.Status = PaymentStatus.Pending;
+            
+            await _paymentRepository.UpdateAsync(existingPayment, cancellationToken);
+        }
+        else
+        {
+            var payment = new Payment
+            {
+                EventId = eventId,
+                StripePaymentIntentId = paymentIntent.Id,
+                Amount = amountInCents / 100m,
+                Currency = "EUR",
+                Status = PaymentStatus.Pending,
+                Tier = tier
+            };
 
-        await _paymentRepository.AddAsync(payment, cancellationToken);
+            await _paymentRepository.AddAsync(payment, cancellationToken);
+        }
 
         return paymentIntent.ClientSecret;
     }

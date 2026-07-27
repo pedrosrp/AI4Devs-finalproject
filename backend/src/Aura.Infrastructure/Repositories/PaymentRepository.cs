@@ -15,4 +15,9 @@ public class PaymentRepository : Repository<Payment>, IPaymentRepository
     {
         return await _context.Set<Payment>().FirstOrDefaultAsync(p => p.StripePaymentIntentId == stripePaymentIntentId, cancellationToken);
     }
+
+    public async Task<Payment?> GetByEventIdAsync(Guid eventId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<Payment>().FirstOrDefaultAsync(p => p.EventId == eventId, cancellationToken);
+    }
 }
