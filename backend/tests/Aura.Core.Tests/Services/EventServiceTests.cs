@@ -17,6 +17,7 @@ public class EventServiceTests
     private readonly ISlugGenerator _slugGeneratorMock;
     private readonly IDataRetentionJobRepository _jobRepositoryMock;
     private readonly IMessageTemplateService _messageTemplateServiceMock;
+    private readonly IQueueService _queueServiceMock;
     private readonly IConfiguration _configurationMock;
     private readonly EventService _sut;
 
@@ -26,6 +27,7 @@ public class EventServiceTests
         _slugGeneratorMock = Substitute.For<ISlugGenerator>();
         _jobRepositoryMock = Substitute.For<IDataRetentionJobRepository>();
         _messageTemplateServiceMock = Substitute.For<IMessageTemplateService>();
+        _queueServiceMock = Substitute.For<IQueueService>();
         _configurationMock = Substitute.For<IConfiguration>();
         _configurationMock["MicrositeBaseUrl"].Returns("http://localhost:4200/e");
 
@@ -34,6 +36,7 @@ public class EventServiceTests
             _slugGeneratorMock,
             _jobRepositoryMock,
             _messageTemplateServiceMock,
+            _queueServiceMock,
             _configurationMock);
     }
 

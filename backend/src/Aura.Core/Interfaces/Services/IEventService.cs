@@ -10,4 +10,5 @@ public interface IEventService
     Task<IEnumerable<EventResponse>> GetEventsAsync(Guid userId);
     Task<EventResponse?> UpdateEventAsync(string slug, Guid userId, UpdateEventRequest request);
     Task<bool> DeleteEventAsync(string slug, Guid userId);
+    Task<bool> RegenerateMicrositeAsync(string slug, Guid userId);
 }

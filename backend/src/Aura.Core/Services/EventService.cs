@@ -4,6 +4,7 @@ using Aura.Core.Enums;
 using Aura.Core.Interfaces.Repositories;
 using Aura.Core.Interfaces.Services;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json;
 
 namespace Aura.Core.Services;
 
@@ -13,6 +14,7 @@ public class EventService : IEventService
     private readonly ISlugGenerator _slugGenerator;
     private readonly IDataRetentionJobRepository _jobRepository;
     private readonly IMessageTemplateService _messageTemplateService;
+    private readonly IQueueService _queueService;
     private readonly string _micrositeBaseUrl;
 
     public EventService(
@@ -20,12 +22,14 @@ public class EventService : IEventService
         ISlugGenerator slugGenerator,
         IDataRetentionJobRepository jobRepository,
         IMessageTemplateService messageTemplateService,
+        IQueueService queueService,
         IConfiguration configuration)
     {
         _eventRepository = eventRepository;
         _slugGenerator = slugGenerator;
         _jobRepository = jobRepository;
         _messageTemplateService = messageTemplateService;
+        _queueService = queueService;
         _micrositeBaseUrl = configuration["MicrositeBaseUrl"] ?? "http://localhost:4200/e";
     }
 
@@ -127,6 +131,15 @@ public class EventService : IEventService
         if (ev == null || ev.UserId != userId) return false;
 
         await _eventRepository.DeleteAsync(ev);
+        return true;
+    }
+
+    public async Task<bool> RegenerateMicrositeAsync(string slug, Guid userId)
+    {
+        var ev = await _eventRepository.GetBySlugAsync(slug);
+        if (ev == null || ev.UserId != userId) return false;
+
+        await _queueService.EnqueueAsync("ssg:queue", JsonSerializer.Serialize(new { EventId = ev.Id, EventSlug = ev.Slug, EventType = "updated" }));
         return true;
     }
 

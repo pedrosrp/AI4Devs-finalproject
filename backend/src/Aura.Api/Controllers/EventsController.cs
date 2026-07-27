@@ -80,6 +80,19 @@ public class EventsController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost("{slug}/regenerate-microsite")]
+    public async Task<IActionResult> RegenerateMicrosite(string slug)
+    {
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(userIdString, out var userId))
+            return Unauthorized();
+
+        var success = await _eventService.RegenerateMicrositeAsync(slug, userId);
+        if (!success) return NotFound();
+
+        return Accepted(new { message = "Microsite regeneration queued." });
+    }
+
     [HttpPost("{slug}/upload-hero-image")]
     public async Task<IActionResult> UploadHeroImage(string slug, Microsoft.AspNetCore.Http.IFormFile file, [FromServices] IObjectStorageService objectStorageService)
     {
