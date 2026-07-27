@@ -13,6 +13,26 @@ spec:
       labels:
         app: aura-microsite-proxy
     spec:
+      initContainers:
+        - name: ensure-public-bucket
+          image: minio/mc:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              mc alias set local http://aura-minio:9000 "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD" || exit 1
+              mc mb --ignore-existing local/static-sites
+              mc anonymous set download local/static-sites
+          envFrom:
+            - secretRef:
+                name: aura-minio-secret
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
       containers:
         - name: nginx
           image: nginx:alpine
