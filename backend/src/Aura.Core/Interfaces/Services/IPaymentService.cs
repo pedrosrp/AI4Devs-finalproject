@@ -7,4 +7,5 @@ public interface IPaymentService
 {
     Task<string> CreatePaymentIntentAsync(Guid eventId, PaymentTier tier, CancellationToken cancellationToken = default);
     Task ProcessWebhookAsync(string json, string stripeSignature, CancellationToken cancellationToken = default);
+    Task<bool> ConfirmPaymentAndPublishAsync(Guid eventId, CancellationToken cancellationToken = default);
 }

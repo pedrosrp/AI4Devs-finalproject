@@ -30,4 +30,8 @@ export class PaymentService {
   publishEvent(slug: string, tier: number): Observable<PublishEventResponse> {
     return this.http.post<PublishEventResponse>(`${this.apiUrl}/events/${slug}/publish`, { tier });
   }
+
+  confirmPayment(slug: string): Observable<{ published: boolean }> {
+    return this.http.post<{ published: boolean }>(`${this.apiUrl}/events/${slug}/confirm-payment`, {});
+  }
 }

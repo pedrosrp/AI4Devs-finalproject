@@ -63,6 +63,22 @@ public class PaymentsController : ControllerBase
             return StatusCode(500, new { error = "Internal server error" });
         }
     }
+
+    [Authorize]
+    [HttpPost("events/{slug}/confirm-payment")]
+    public async Task<IActionResult> ConfirmPayment(string slug, CancellationToken cancellationToken)
+    {
+        var ev = await _eventRepository.GetBySlugAsync(slug);
+        if (ev == null)
+            return NotFound(new { error = "Event not found" });
+
+        var userId = User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
+        if (ev.UserId.ToString() != userId)
+            return Forbid();
+
+        var result = await _paymentService.ConfirmPaymentAndPublishAsync(ev.Id, cancellationToken);
+        return Ok(new { published = result });
+    }
 }
 
 public class PublishEventRequest

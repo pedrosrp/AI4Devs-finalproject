@@ -131,6 +131,52 @@ public class StripePaymentService : IPaymentService
         }
     }
 
+    public async Task<bool> ConfirmPaymentAndPublishAsync(Guid eventId, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrEmpty(_options.SecretKey))
+        {
+            throw new InvalidOperationException("Stripe SecretKey is not configured.");
+        }
+
+        var payment = await _paymentRepository.GetByEventIdAsync(eventId, cancellationToken);
+        if (payment == null || string.IsNullOrEmpty(payment.StripePaymentIntentId))
+        {
+            _logger.LogWarning("No payment found for event {EventId}", eventId);
+            return false;
+        }
+
+        if (payment.Status == PaymentStatus.Succeeded)
+        {
+            return true;
+        }
+
+        var service = new PaymentIntentService();
+        var paymentIntent = await service.GetAsync(payment.StripePaymentIntentId, cancellationToken: cancellationToken);
+
+        if (paymentIntent.Status != "succeeded")
+        {
+            _logger.LogWarning("Payment intent {PaymentIntentId} status is {Status} for event {EventId}", payment.StripePaymentIntentId, paymentIntent.Status, eventId);
+            return false;
+        }
+
+        payment.Status = PaymentStatus.Succeeded;
+        payment.CompletedAt = DateTimeOffset.UtcNow;
+        await _paymentRepository.UpdateAsync(payment, cancellationToken);
+
+        var ev = await _eventRepository.GetByIdAsync(eventId, cancellationToken);
+        if (ev != null && ev.Status == EventStatus.Draft)
+        {
+            ev.Status = EventStatus.Published;
+            ev.PublishedAt = DateTimeOffset.UtcNow;
+            await _eventRepository.UpdateAsync(ev, cancellationToken);
+
+            await _queueService.EnqueueAsync("ssg:queue", JsonSerializer.Serialize(new { EventId = ev.Id, EventSlug = ev.Slug, EventType = "published" }), cancellationToken);
+            _logger.LogInformation("Event {EventId} published via fallback confirmation and SSG job enqueued.", ev.Id);
+        }
+
+        return true;
+    }
+
     private async Task HandlePaymentSucceededAsync(PaymentIntent paymentIntent, CancellationToken cancellationToken)
     {
         var payment = await _paymentRepository.GetByStripePaymentIntentIdAsync(paymentIntent.Id, cancellationToken);
