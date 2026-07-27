@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PaymentService } from '../../../../core/services/payment.service';
 import { EventService } from '../../../../core/services/event.service';
 import { loadStripe, Stripe, StripeElements, StripeCardElement } from '@stripe/stripe-js';
-import { timer, of, switchMap, takeWhile, take, catchError } from 'rxjs';
+import { timer, of, switchMap, take, catchError } from 'rxjs';
 
 @Component({
   selector: 'app-publish-dialog',

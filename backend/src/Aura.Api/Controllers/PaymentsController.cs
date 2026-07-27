@@ -3,9 +3,11 @@ using Aura.Core.Enums;
 using Aura.Core.Exceptions;
 using Aura.Core.Interfaces.Repositories;
 using Aura.Core.Interfaces.Services;
+using Aura.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Security.Claims;
 
 namespace Aura.Api.Controllers;
 
@@ -72,7 +74,7 @@ public class PaymentsController : ControllerBase
         if (ev == null)
             return NotFound(new { error = "Event not found" });
 
-        var userId = User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (ev.UserId.ToString() != userId)
             return Forbid();
 
