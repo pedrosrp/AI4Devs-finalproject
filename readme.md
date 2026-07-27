@@ -24,7 +24,16 @@ Aura Planning es una plataforma SaaS que reemplaza las invitaciones de boda de p
 
 ### **0.4. URL del proyecto:**
 
+**Repositorio del proyecto / Tablero (Project Board):**
 https://github.com/users/pedrosrp/projects/3
+
+**URL de acceso a la aplicación:**
+https://64.225.81.100/
+
+**Datos de tarjeta de prueba (Stripe) para publicar eventos:**
+- **Número:** `4242 4242 4242 4242`
+- **Fecha:** `12/28`
+- **CVC:** `123`
 
 ### 0.5. URL o archivo comprimido del repositorio
 

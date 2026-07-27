@@ -1,5 +1,5 @@
 {
-  "version": "2.13",
+  "version": "2.14",
   "children": [
     {
       "type": "frame",
@@ -4165,7 +4165,7 @@
           "fill": {
             "type": "image",
             "enabled": true,
-            "url": "./images/generated-1785137900780.png",
+            "url": "images/generated-1785137900780.png",
             "mode": "fill"
           },
           "cornerRadius": 12,
@@ -5055,8 +5055,8 @@
       "name": "Event Editor Improved",
       "clip": true,
       "width": 1200,
-      "height": 1200,
-      "fill": "#FDFBF7",
+      "height": 1400,
+      "fill": "$bg-cream",
       "layout": "vertical",
       "children": [
         {
@@ -5065,8 +5065,8 @@
           "name": "Top Header",
           "width": "fill_container",
           "height": 64,
-          "fill": "#FFFFFF",
-          "stroke": "#E8E0D4",
+          "fill": "$card-bg",
+          "stroke": "$border",
           "strokeWidth": {
             "bottom": 1
           },
@@ -5092,15 +5092,15 @@
                   "height": 20,
                   "icon": "arrow-left",
                   "library": "lucide",
-                  "fill": "#6B6560"
+                  "fill": "$text-secondary"
                 },
                 {
                   "type": "text",
                   "id": "g6d3Dy",
                   "name": "Breadcrumb",
-                  "fill": "#6B6560",
+                  "fill": "$text-secondary",
                   "content": "Dashboard / Pedro & Diana",
-                  "fontFamily": "Inter",
+                  "fontFamily": "$font-body",
                   "fontSize": 14,
                   "fontWeight": "normal"
                 },
@@ -5108,9 +5108,9 @@
                   "type": "text",
                   "id": "M3lpEI",
                   "name": "Title",
-                  "fill": "#2D2A26",
+                  "fill": "$text-primary",
                   "content": "Edit Event",
-                  "fontFamily": "Playfair Display",
+                  "fontFamily": "$font-heading",
                   "fontSize": 20,
                   "fontWeight": "600"
                 }
@@ -5128,7 +5128,7 @@
                   "id": "txHXJ",
                   "name": "Preview",
                   "fill": "#00000000",
-                  "cornerRadius": 8,
+                  "cornerRadius": "$radius-sm",
                   "gap": 6,
                   "padding": [
                     10,
@@ -5145,15 +5145,15 @@
                       "height": 16,
                       "icon": "eye",
                       "library": "lucide",
-                      "fill": "#2D2A26"
+                      "fill": "$text-primary"
                     },
                     {
                       "type": "text",
                       "id": "jYFqM",
                       "name": "Label",
-                      "fill": "#2D2A26",
+                      "fill": "$text-primary",
                       "content": "Preview",
-                      "fontFamily": "Inter",
+                      "fontFamily": "$font-body",
                       "fontSize": 14,
                       "fontWeight": "500"
                     }
@@ -5163,8 +5163,8 @@
                   "type": "frame",
                   "id": "zBHub",
                   "name": "Save",
-                  "fill": "#F5F0E8",
-                  "cornerRadius": 8,
+                  "fill": "$bg-surface",
+                  "cornerRadius": "$radius-sm",
                   "gap": 6,
                   "padding": [
                     10,
@@ -5181,15 +5181,15 @@
                       "height": 16,
                       "icon": "save",
                       "library": "lucide",
-                      "fill": "#2D2A26"
+                      "fill": "$text-primary"
                     },
                     {
                       "type": "text",
                       "id": "Exvt9",
                       "name": "Label",
-                      "fill": "#2D2A26",
+                      "fill": "$text-primary",
                       "content": "Save",
-                      "fontFamily": "Inter",
+                      "fontFamily": "$font-body",
                       "fontSize": 14,
                       "fontWeight": "500"
                     }
@@ -5199,8 +5199,8 @@
                   "type": "frame",
                   "id": "RL4Wx",
                   "name": "Publish",
-                  "fill": "#7C9A72",
-                  "cornerRadius": 8,
+                  "fill": "$primary",
+                  "cornerRadius": "$radius-sm",
                   "gap": 6,
                   "padding": [
                     10,
@@ -5225,7 +5225,7 @@
                       "name": "Label",
                       "fill": "#FFFFFF",
                       "content": "Publish",
-                      "fontFamily": "Inter",
+                      "fontFamily": "$font-body",
                       "fontSize": 14,
                       "fontWeight": "500"
                     }
@@ -5241,29 +5241,158 @@
           "name": "Main",
           "width": "fill_container",
           "height": "fill_container",
+          "layout": "vertical",
           "gap": 32,
           "padding": 32,
+          "alignItems": "center",
           "children": [
             {
               "type": "frame",
               "id": "QVA1K",
-              "name": "Form Panel",
-              "width": 400,
-              "height": "fill_container",
+              "name": "Editor Column",
+              "width": "fill_container",
               "layout": "vertical",
-              "gap": 20,
               "children": [
                 {
                   "type": "frame",
                   "id": "anIft",
-                  "name": "Event Details",
+                  "name": "Section Tabs",
                   "width": "fill_container",
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 16,
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "tabDetails",
+                      "name": "Details Tab",
+                      "fill": "$primary",
+                      "cornerRadius": "$radius-sm",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "tabDetailsLabel",
+                          "fill": "#FFFFFF",
+                          "content": "Details",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tabDesign",
+                      "name": "Design Tab",
+                      "fill": "#00000000",
+                      "cornerRadius": "$radius-sm",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "tabDesignLabel",
+                          "fill": "$text-secondary",
+                          "content": "Design",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tabHero",
+                      "name": "Hero Tab",
+                      "fill": "#00000000",
+                      "cornerRadius": "$radius-sm",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "tabHeroLabel",
+                          "fill": "$text-secondary",
+                          "content": "Hero",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tabPostEvent",
+                      "name": "Post-Event Tab",
+                      "fill": "#00000000",
+                      "cornerRadius": "$radius-sm",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "tabPostEventLabel",
+                          "fill": "$text-secondary",
+                          "content": "Post-Event",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "tabActions",
+                      "name": "Actions Tab",
+                      "fill": "#00000000",
+                      "cornerRadius": "$radius-sm",
+                      "padding": [
+                        10,
+                        16
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "tabActionsLabel",
+                          "fill": "$text-secondary",
+                          "content": "Actions",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "A9DDyI",
+                  "name": "Details Card",
+                  "width": "fill_container",
+                  "fill": "$card-bg",
+                  "cornerRadius": "$radius-lg",
                   "effect": {
                     "type": "shadow",
                     "shadowType": "outer",
-                    "color": "#00000008",
+                    "color": "$shadow-sm",
                     "offset": {
                       "x": 0,
                       "y": 2
@@ -5278,15 +5407,15 @@
                       "type": "text",
                       "id": "kTLIP",
                       "name": "Section Title",
-                      "fill": "#2D2A26",
+                      "fill": "$text-primary",
                       "content": "Event Details",
-                      "fontFamily": "Playfair Display",
+                      "fontFamily": "$font-heading",
                       "fontSize": 18,
                       "fontWeight": "600"
                     },
                     {
                       "type": "frame",
-                      "id": "A9DDyI",
+                      "id": "rowCouple",
                       "name": "Couple Names",
                       "width": "fill_container",
                       "layout": "vertical",
@@ -5296,9 +5425,9 @@
                           "type": "text",
                           "id": "m8ermo",
                           "name": "Label",
-                          "fill": "#2D2A26",
+                          "fill": "$text-primary",
                           "content": "Couple Names",
-                          "fontFamily": "Inter",
+                          "fontFamily": "$font-body",
                           "fontSize": 13,
                           "fontWeight": "500"
                         },
@@ -5307,10 +5436,10 @@
                           "id": "ExSu6",
                           "name": "Field",
                           "width": "fill_container",
-                          "height": 40,
-                          "fill": "#FFFFFF",
-                          "cornerRadius": 12,
-                          "stroke": "#E8E0D4",
+                          "height": 44,
+                          "fill": "$card-bg",
+                          "cornerRadius": "$radius-md",
+                          "stroke": "$border",
                           "strokeWidth": 1,
                           "padding": [
                             0,
@@ -5322,9 +5451,9 @@
                               "type": "text",
                               "id": "dwrhF",
                               "name": "Placeholder",
-                              "fill": "#9B9590",
+                              "fill": "$text-muted",
                               "content": "Pedro & Diana",
-                              "fontFamily": "Inter",
+                              "fontFamily": "$font-body",
                               "fontSize": 14,
                               "fontWeight": "normal"
                             }
@@ -5334,7 +5463,7 @@
                     },
                     {
                       "type": "frame",
-                      "id": "w7aCs2",
+                      "id": "rowName",
                       "name": "Event Name",
                       "width": "fill_container",
                       "layout": "vertical",
@@ -5344,9 +5473,9 @@
                           "type": "text",
                           "id": "wpGqd",
                           "name": "Label",
-                          "fill": "#2D2A26",
+                          "fill": "$text-primary",
                           "content": "Event Name",
-                          "fontFamily": "Inter",
+                          "fontFamily": "$font-body",
                           "fontSize": 13,
                           "fontWeight": "500"
                         },
@@ -5355,10 +5484,10 @@
                           "id": "z9lFR",
                           "name": "Field",
                           "width": "fill_container",
-                          "height": 40,
-                          "fill": "#FFFFFF",
-                          "cornerRadius": 12,
-                          "stroke": "#E8E0D4",
+                          "height": 44,
+                          "fill": "$card-bg",
+                          "cornerRadius": "$radius-md",
+                          "stroke": "$border",
                           "strokeWidth": 1,
                           "padding": [
                             0,
@@ -5370,9 +5499,9 @@
                               "type": "text",
                               "id": "ffo5H",
                               "name": "Placeholder",
-                              "fill": "#9B9590",
+                              "fill": "$text-muted",
                               "content": "Pedro & Diana's Wedding",
-                              "fontFamily": "Inter",
+                              "fontFamily": "$font-body",
                               "fontSize": 14,
                               "fontWeight": "normal"
                             }
@@ -5382,7 +5511,7 @@
                     },
                     {
                       "type": "frame",
-                      "id": "N5FBSy",
+                      "id": "rowDate",
                       "name": "Event Date",
                       "width": "fill_container",
                       "layout": "vertical",
@@ -5392,9 +5521,9 @@
                           "type": "text",
                           "id": "Q5jIvC",
                           "name": "Label",
-                          "fill": "#2D2A26",
+                          "fill": "$text-primary",
                           "content": "Event Date",
-                          "fontFamily": "Inter",
+                          "fontFamily": "$font-body",
                           "fontSize": 13,
                           "fontWeight": "500"
                         },
@@ -5403,10 +5532,10 @@
                           "id": "uoU6I",
                           "name": "Field",
                           "width": "fill_container",
-                          "height": 40,
-                          "fill": "#FFFFFF",
-                          "cornerRadius": 12,
-                          "stroke": "#E8E0D4",
+                          "height": 44,
+                          "fill": "$card-bg",
+                          "cornerRadius": "$radius-md",
+                          "stroke": "$border",
                           "strokeWidth": 1,
                           "padding": [
                             0,
@@ -5418,9 +5547,9 @@
                               "type": "text",
                               "id": "toQ0b",
                               "name": "Placeholder",
-                              "fill": "#9B9590",
+                              "fill": "$text-muted",
                               "content": "July 27, 2028",
-                              "fontFamily": "Inter",
+                              "fontFamily": "$font-body",
                               "fontSize": 14,
                               "fontWeight": "normal"
                             }
@@ -5430,7 +5559,7 @@
                     },
                     {
                       "type": "frame",
-                      "id": "pstxU",
+                      "id": "rowVenueName",
                       "name": "Venue Name",
                       "width": "fill_container",
                       "layout": "vertical",
@@ -5440,9 +5569,9 @@
                           "type": "text",
                           "id": "VvERt",
                           "name": "Label",
-                          "fill": "#2D2A26",
+                          "fill": "$text-primary",
                           "content": "Venue Name",
-                          "fontFamily": "Inter",
+                          "fontFamily": "$font-body",
                           "fontSize": 13,
                           "fontWeight": "500"
                         },
@@ -5451,10 +5580,10 @@
                           "id": "Wg8TM",
                           "name": "Field",
                           "width": "fill_container",
-                          "height": 40,
-                          "fill": "#FFFFFF",
-                          "cornerRadius": 12,
-                          "stroke": "#E8E0D4",
+                          "height": 44,
+                          "fill": "$card-bg",
+                          "cornerRadius": "$radius-md",
+                          "stroke": "$border",
                           "strokeWidth": 1,
                           "padding": [
                             0,
@@ -5466,9 +5595,9 @@
                               "type": "text",
                               "id": "qxIiv",
                               "name": "Placeholder",
-                              "fill": "#9B9590",
+                              "fill": "$text-muted",
                               "content": "La Finca de Aranjuez",
-                              "fontFamily": "Inter",
+                              "fontFamily": "$font-body",
                               "fontSize": 14,
                               "fontWeight": "normal"
                             }
@@ -5478,7 +5607,7 @@
                     },
                     {
                       "type": "frame",
-                      "id": "grHvO",
+                      "id": "rowVenueAddress",
                       "name": "Venue Address",
                       "width": "fill_container",
                       "layout": "vertical",
@@ -5488,9 +5617,9 @@
                           "type": "text",
                           "id": "fz5MC",
                           "name": "Label",
-                          "fill": "#2D2A26",
+                          "fill": "$text-primary",
                           "content": "Venue Address",
-                          "fontFamily": "Inter",
+                          "fontFamily": "$font-body",
                           "fontSize": 13,
                           "fontWeight": "500"
                         },
@@ -5499,10 +5628,10 @@
                           "id": "gSn99",
                           "name": "Field",
                           "width": "fill_container",
-                          "height": 40,
-                          "fill": "#FFFFFF",
-                          "cornerRadius": 12,
-                          "stroke": "#E8E0D4",
+                          "height": 44,
+                          "fill": "$card-bg",
+                          "cornerRadius": "$radius-md",
+                          "stroke": "$border",
                           "strokeWidth": 1,
                           "padding": [
                             0,
@@ -5514,9 +5643,9 @@
                               "type": "text",
                               "id": "mj18q",
                               "name": "Placeholder",
-                              "fill": "#9B9590",
+                              "fill": "$text-muted",
                               "content": "Calle de la Finca, 1, Aranjuez",
-                              "fontFamily": "Inter",
+                              "fontFamily": "$font-body",
                               "fontSize": 14,
                               "fontWeight": "normal"
                             }
@@ -5529,14 +5658,18 @@
                 {
                   "type": "frame",
                   "id": "E1prw",
-                  "name": "Colors",
-                  "width": "fill_container",
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 16,
+                  "layoutPosition": "absolute",
+                  "x": 0,
+                  "y": 60,
+                  "name": "Design Card",
+                  "enabled": false,
+                  "width": 560,
+                  "fill": "$card-bg",
+                  "cornerRadius": "$radius-lg",
                   "effect": {
                     "type": "shadow",
                     "shadowType": "outer",
-                    "color": "#00000008",
+                    "color": "$shadow-sm",
                     "offset": {
                       "x": 0,
                       "y": 2
@@ -5551,9 +5684,9 @@
                       "type": "text",
                       "id": "ciCS8",
                       "name": "Section Title",
-                      "fill": "#2D2A26",
-                      "content": "Colors",
-                      "fontFamily": "Playfair Display",
+                      "fill": "$text-primary",
+                      "content": "Design",
+                      "fontFamily": "$font-heading",
                       "fontSize": 18,
                       "fontWeight": "600"
                     },
@@ -5576,9 +5709,9 @@
                               "type": "text",
                               "id": "K1b8Z",
                               "name": "Label",
-                              "fill": "#2D2A26",
+                              "fill": "$text-primary",
                               "content": "Primary Color",
-                              "fontFamily": "Inter",
+                              "fontFamily": "$font-body",
                               "fontSize": 13,
                               "fontWeight": "500"
                             },
@@ -5595,18 +5728,18 @@
                                   "name": "Swatch",
                                   "width": 32,
                                   "height": 32,
-                                  "fill": "#000000",
-                                  "cornerRadius": 8,
-                                  "stroke": "#E8E0D4",
+                                  "fill": "$text-primary",
+                                  "cornerRadius": "$radius-sm",
+                                  "stroke": "$border",
                                   "strokeWidth": 1
                                 },
                                 {
                                   "type": "text",
                                   "id": "G1GZx",
                                   "name": "Hex",
-                                  "fill": "#6B6560",
-                                  "content": "#000000",
-                                  "fontFamily": "Inter",
+                                  "fill": "$text-secondary",
+                                  "content": "#2D2A26",
+                                  "fontFamily": "$font-body",
                                   "fontSize": 14,
                                   "fontWeight": "normal"
                                 }
@@ -5626,9 +5759,9 @@
                               "type": "text",
                               "id": "aEtWb",
                               "name": "Label",
-                              "fill": "#2D2A26",
+                              "fill": "$text-primary",
                               "content": "Secondary Color",
-                              "fontFamily": "Inter",
+                              "fontFamily": "$font-body",
                               "fontSize": 13,
                               "fontWeight": "500"
                             },
@@ -5645,18 +5778,18 @@
                                   "name": "Swatch",
                                   "width": 32,
                                   "height": 32,
-                                  "fill": "#FFFFFF",
-                                  "cornerRadius": 8,
-                                  "stroke": "#E8E0D4",
+                                  "fill": "$card-bg",
+                                  "cornerRadius": "$radius-sm",
+                                  "stroke": "$border",
                                   "strokeWidth": 1
                                 },
                                 {
                                   "type": "text",
                                   "id": "JqX7r",
                                   "name": "Hex",
-                                  "fill": "#6B6560",
+                                  "fill": "$text-secondary",
                                   "content": "#FFFFFF",
-                                  "fontFamily": "Inter",
+                                  "fontFamily": "$font-body",
                                   "fontSize": 14,
                                   "fontWeight": "normal"
                                 }
@@ -5665,39 +5798,6 @@
                           ]
                         }
                       ]
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "ikZA7",
-                  "name": "Typography",
-                  "width": "fill_container",
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 16,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#00000008",
-                    "offset": {
-                      "x": 0,
-                      "y": 2
-                    },
-                    "blur": 8
-                  },
-                  "layout": "vertical",
-                  "gap": 16,
-                  "padding": 20,
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "hF7zl",
-                      "name": "Section Title",
-                      "fill": "#2D2A26",
-                      "content": "Typography",
-                      "fontFamily": "Playfair Display",
-                      "fontSize": 18,
-                      "fontWeight": "600"
                     },
                     {
                       "type": "frame",
@@ -5713,16 +5813,16 @@
                           "name": "Swatch",
                           "width": 32,
                           "height": 32,
-                          "fill": "#F5F0E8",
-                          "cornerRadius": 8
+                          "fill": "$bg-surface",
+                          "cornerRadius": "$radius-sm"
                         },
                         {
                           "type": "text",
                           "id": "LETbf",
                           "name": "Font",
-                          "fill": "#2D2A26",
+                          "fill": "$text-primary",
                           "content": "Inter",
-                          "fontFamily": "Inter",
+                          "fontFamily": "$font-body",
                           "fontSize": 14,
                           "fontWeight": "normal"
                         }
@@ -5733,14 +5833,18 @@
                 {
                   "type": "frame",
                   "id": "tcKGE",
-                  "name": "Hero Image",
-                  "width": "fill_container",
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 16,
+                  "layoutPosition": "absolute",
+                  "x": 0,
+                  "y": 60,
+                  "name": "Hero Card",
+                  "enabled": false,
+                  "width": 560,
+                  "fill": "$card-bg",
+                  "cornerRadius": "$radius-lg",
                   "effect": {
                     "type": "shadow",
                     "shadowType": "outer",
-                    "color": "#00000008",
+                    "color": "$shadow-sm",
                     "offset": {
                       "x": 0,
                       "y": 2
@@ -5755,9 +5859,9 @@
                       "type": "text",
                       "id": "FOqxw",
                       "name": "Section Title",
-                      "fill": "#2D2A26",
+                      "fill": "$text-primary",
                       "content": "Hero Image",
-                      "fontFamily": "Playfair Display",
+                      "fontFamily": "$font-heading",
                       "fontSize": 18,
                       "fontWeight": "600"
                     },
@@ -5766,9 +5870,11 @@
                       "id": "q5JhDh",
                       "name": "Upload",
                       "width": "fill_container",
-                      "height": 100,
-                      "fill": "#F5F0E8",
-                      "cornerRadius": 12,
+                      "height": 120,
+                      "fill": "$bg-surface",
+                      "cornerRadius": "$radius-md",
+                      "layout": "vertical",
+                      "gap": 8,
                       "justifyContent": "center",
                       "alignItems": "center",
                       "children": [
@@ -5780,15 +5886,15 @@
                           "height": 32,
                           "icon": "upload",
                           "library": "lucide",
-                          "fill": "#9B9590"
+                          "fill": "$text-muted"
                         },
                         {
                           "type": "text",
                           "id": "Az48E",
                           "name": "Hint",
-                          "fill": "#9B9590",
+                          "fill": "$text-muted",
                           "content": "Drop or click to upload",
-                          "fontFamily": "Inter",
+                          "fontFamily": "$font-body",
                           "fontSize": 13,
                           "fontWeight": "normal"
                         }
@@ -5799,14 +5905,18 @@
                 {
                   "type": "frame",
                   "id": "U1aER",
-                  "name": "Post-Event",
-                  "width": "fill_container",
-                  "fill": "#FFFFFF",
-                  "cornerRadius": 16,
+                  "layoutPosition": "absolute",
+                  "x": 0,
+                  "y": 60,
+                  "name": "Post-Event Card",
+                  "enabled": false,
+                  "width": 560,
+                  "fill": "$card-bg",
+                  "cornerRadius": "$radius-lg",
                   "effect": {
                     "type": "shadow",
                     "shadowType": "outer",
-                    "color": "#00000008",
+                    "color": "$shadow-sm",
                     "offset": {
                       "x": 0,
                       "y": 2
@@ -5821,9 +5931,9 @@
                       "type": "text",
                       "id": "T1VAjt",
                       "name": "Section Title",
-                      "fill": "#2D2A26",
+                      "fill": "$text-primary",
                       "content": "Post-Event",
-                      "fontFamily": "Playfair Display",
+                      "fontFamily": "$font-heading",
                       "fontSize": 18,
                       "fontWeight": "600"
                     },
@@ -5839,9 +5949,9 @@
                           "type": "text",
                           "id": "gByeT",
                           "name": "Label",
-                          "fill": "#2D2A26",
+                          "fill": "$text-primary",
                           "content": "Thank You Message",
-                          "fontFamily": "Inter",
+                          "fontFamily": "$font-body",
                           "fontSize": 13,
                           "fontWeight": "500"
                         },
@@ -5851,9 +5961,9 @@
                           "name": "Field",
                           "width": "fill_container",
                           "height": 80,
-                          "fill": "#FFFFFF",
-                          "cornerRadius": 12,
-                          "stroke": "#E8E0D4",
+                          "fill": "$card-bg",
+                          "cornerRadius": "$radius-md",
+                          "stroke": "$border",
                           "strokeWidth": 1,
                           "layout": "vertical",
                           "padding": 12,
@@ -5862,9 +5972,9 @@
                               "type": "text",
                               "id": "QJBy6",
                               "name": "Placeholder",
-                              "fill": "#9B9590",
+                              "fill": "$text-muted",
                               "content": "Thanks for celebrating with us!",
-                              "fontFamily": "Inter",
+                              "fontFamily": "$font-body",
                               "fontSize": 14,
                               "fontWeight": "normal"
                             }
@@ -5884,9 +5994,9 @@
                           "type": "text",
                           "id": "cPRpg",
                           "name": "Label",
-                          "fill": "#2D2A26",
+                          "fill": "$text-primary",
                           "content": "Photo Gallery URL",
-                          "fontFamily": "Inter",
+                          "fontFamily": "$font-body",
                           "fontSize": 13,
                           "fontWeight": "500"
                         },
@@ -5895,10 +6005,10 @@
                           "id": "oXmaO",
                           "name": "Field",
                           "width": "fill_container",
-                          "height": 40,
-                          "fill": "#FFFFFF",
-                          "cornerRadius": 12,
-                          "stroke": "#E8E0D4",
+                          "height": 44,
+                          "fill": "$card-bg",
+                          "cornerRadius": "$radius-md",
+                          "stroke": "$border",
                           "strokeWidth": 1,
                           "padding": [
                             0,
@@ -5910,9 +6020,9 @@
                               "type": "text",
                               "id": "pK7Om",
                               "name": "Placeholder",
-                              "fill": "#9B9590",
+                              "fill": "$text-muted",
                               "content": "https://photos.app.goo.gl/...",
-                              "fontFamily": "Inter",
+                              "fontFamily": "$font-body",
                               "fontSize": 14,
                               "fontWeight": "normal"
                             }
@@ -5927,7 +6037,7 @@
             {
               "type": "frame",
               "id": "ioj2u",
-              "name": "Preview Panel",
+              "name": "Preview Column",
               "width": "fill_container",
               "height": "fill_container",
               "fill": "#F5F0E8",
@@ -5935,16 +6045,15 @@
               "layout": "vertical",
               "gap": 16,
               "padding": 24,
-              "justifyContent": "center",
               "alignItems": "center",
               "children": [
                 {
                   "type": "text",
                   "id": "h6tWOB",
                   "name": "Preview Label",
-                  "fill": "#6B6560",
+                  "fill": "$text-secondary",
                   "content": "Live Preview",
-                  "fontFamily": "Inter",
+                  "fontFamily": "$font-body",
                   "fontSize": 13,
                   "fontWeight": "500"
                 },
@@ -5954,12 +6063,12 @@
                   "name": "Phone Preview",
                   "width": 360,
                   "height": 640,
-                  "fill": "#FFFFFF",
+                  "fill": "$card-bg",
                   "cornerRadius": 24,
                   "effect": {
                     "type": "shadow",
                     "shadowType": "outer",
-                    "color": "#00000012",
+                    "color": "$shadow-lg",
                     "offset": {
                       "x": 0,
                       "y": 8
@@ -5977,7 +6086,7 @@
                       "fill": {
                         "type": "image",
                         "enabled": true,
-                        "url": "./images/generated-1785137871263.png",
+                        "url": "images/generated-1785137871263.png",
                         "mode": "fill"
                       },
                       "justifyContent": "center",
@@ -5991,7 +6100,7 @@
                           "height": 48,
                           "icon": "image",
                           "library": "lucide",
-                          "fill": "#9B9590"
+                          "fill": "$text-muted"
                         }
                       ]
                     },
@@ -6010,9 +6119,9 @@
                           "type": "text",
                           "id": "sbVHD",
                           "name": "Overline",
-                          "fill": "#C9A96E",
+                          "fill": "$accent",
                           "content": "WE ARE GETTING MARRIED",
-                          "fontFamily": "Inter",
+                          "fontFamily": "$font-body",
                           "fontSize": 13,
                           "fontWeight": "normal",
                           "letterSpacing": 2
@@ -6021,9 +6130,9 @@
                           "type": "text",
                           "id": "U8ukB",
                           "name": "Couple",
-                          "fill": "#2D2A26",
+                          "fill": "$text-primary",
                           "content": "Pedro & Diana",
-                          "fontFamily": "Playfair Display",
+                          "fontFamily": "$font-heading",
                           "fontSize": 36,
                           "fontWeight": "normal"
                         },
@@ -6031,9 +6140,9 @@
                           "type": "text",
                           "id": "GVzCO",
                           "name": "Date",
-                          "fill": "#2D2A26",
+                          "fill": "$text-primary",
                           "content": "July 27, 2028",
-                          "fontFamily": "Playfair Display",
+                          "fontFamily": "$font-heading",
                           "fontSize": 20,
                           "fontWeight": "normal"
                         },
@@ -6041,9 +6150,9 @@
                           "type": "text",
                           "id": "khSNq",
                           "name": "Venue",
-                          "fill": "#6B6560",
+                          "fill": "$text-secondary",
                           "content": "La Finca de Aranjuez",
-                          "fontFamily": "Inter",
+                          "fontFamily": "$font-body",
                           "fontSize": 15,
                           "fontWeight": "normal"
                         },
@@ -6051,8 +6160,8 @@
                           "type": "frame",
                           "id": "Qbo3p",
                           "name": "RSVP Button",
-                          "fill": "#7C9A72",
-                          "cornerRadius": 12,
+                          "fill": "$primary",
+                          "cornerRadius": "$radius-md",
                           "gap": 8,
                           "padding": [
                             12,
@@ -6067,7 +6176,7 @@
                               "name": "Label",
                               "fill": "#FFFFFF",
                               "content": "RSVP Now",
-                              "fontFamily": "Inter",
+                              "fontFamily": "$font-body",
                               "fontSize": 14,
                               "fontWeight": "500"
                             }
@@ -6245,5 +6354,6 @@
       "type": "color",
       "value": "#6B6560"
     }
-  }
+  },
+  "fileToken": "7d4447e4-19b6-4762-bd96-78114060851d"
 }
