@@ -157,22 +157,34 @@ export class RsvpFormPageComponent implements OnInit {
 
     this.rsvpService.getRsvpInfo(this.token).subscribe({
       next: (res) => {
-        this.info = res;
-        if (res.deadlinePassed) {
-          this.errorState = 'deadline';
-        } else if (res.existingRsvp) {
-          this.request = {
-            attendance: res.existingRsvp.attendance,
-            dietaryRestrictions: res.existingRsvp.dietaryRestrictions,
-            needsTransport: res.existingRsvp.needsTransport,
-            bringingPlusOne: res.existingRsvp.bringingPlusOne,
-            plusOneName: res.existingRsvp.plusOneName,
-            personalMessage: res.existingRsvp.personalMessage
-          };
+        try {
+          if (!res) {
+            this.errorState = 'invalid';
+            this.isLoading = false;
+            return;
+          }
+          this.info = res;
+          if (res.deadlinePassed) {
+            this.errorState = 'deadline';
+          } else if (res.existingRsvp) {
+            this.request = {
+              attendance: res.existingRsvp.attendance,
+              dietaryRestrictions: res.existingRsvp.dietaryRestrictions,
+              needsTransport: res.existingRsvp.needsTransport,
+              bringingPlusOne: res.existingRsvp.bringingPlusOne,
+              plusOneName: res.existingRsvp.plusOneName,
+              personalMessage: res.existingRsvp.personalMessage
+            };
+          }
+        } catch (e) {
+          console.error('Error handling RSVP info', e);
+          this.errorState = 'invalid';
+        } finally {
+          this.isLoading = false;
         }
-        this.isLoading = false;
       },
       error: (err) => {
+        console.error('RSVP HTTP Error', err);
         this.isLoading = false;
         if (err.status === 404) {
           this.errorState = 'invalid';
