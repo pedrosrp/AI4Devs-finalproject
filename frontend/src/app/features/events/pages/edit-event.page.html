@@ -1,136 +1,179 @@
-<div class="editor-layout">
-  <!-- Sidebar Editor -->
-  <aside class="editor-sidebar" [formGroup]="editorForm">
-    <div class="sidebar-header">
-      <h2>Template Editor</h2>
-      <div class="save-indicator" [ngClass]="saveState()">
+<div class="flex flex-col min-h-screen bg-bg-cream">
+  <!-- Top Bar -->
+  <header class="bg-card-bg border-b border-border flex items-center justify-between px-6 py-4 fixed top-0 w-full z-10 shadow-sm">
+    <div class="flex items-center gap-4">
+      <a routerLink="/dashboard" class="text-text-secondary hover:text-text-primary transition-colors">
+        <i class="fa-solid fa-arrow-left"></i>
+      </a>
+      <div class="text-sm font-medium text-text-secondary flex items-center">
+        Dashboard <span class="mx-2">/</span> <span class="text-text-primary">{{ eventData()?.coupleNames || eventData()?.name || 'Loading...' }}</span>
+      </div>
+      <h1 class="font-heading text-2xl text-text-primary ml-6 m-0 border-l border-border pl-6">Edit Event</h1>
+      
+      <div class="ml-4 text-xs font-medium" [ngClass]="{
+        'text-success': saveState() === 'saved',
+        'text-warning': saveState() === 'saving',
+        'text-info': saveState() === 'unsaved',
+        'text-error': saveState() === 'error'
+      }">
         @if (saveState() === 'saved') {
-          <span class="icon">✓</span> Saved
+          <i class="fa-solid fa-check mr-1"></i> Saved
         } @else if (saveState() === 'saving') {
-          <span class="icon spinner">↻</span> Saving...
+          <i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...
         } @else if (saveState() === 'unsaved') {
-          <span class="icon">●</span> Unsaved changes
+          <i class="fa-solid fa-circle text-[8px] mr-1"></i> Unsaved changes
         } @else if (saveState() === 'error') {
-          <span class="icon">⚠</span> Error saving
+          <i class="fa-solid fa-triangle-exclamation mr-1"></i> Error saving
         }
       </div>
     </div>
-
-    @if (errorMessage()) {
-      <div class="error-alert">{{ errorMessage() }}</div>
-    }
-
-    <div class="editor-section">
-      <h3>Template</h3>
-      <div class="template-grid">
-        @for (tpl of templates(); track tpl.id) {
-          <label class="template-card" [class.selected]="editorForm.get('templateId')?.value === tpl.id">
-            <input type="radio" formControlName="templateId" [value]="tpl.id" class="sr-only">
-            <div class="template-preview" [style.background-image]="'url(' + tpl.previewUrl + ')'"></div>
-            <span>{{ tpl.name }}</span>
-          </label>
-        }
-      </div>
+    
+    <div class="flex items-center gap-3">
+      <app-button variant="ghost" icon="fa-solid fa-eye">Preview</app-button>
+      <app-button variant="secondary" (onClick)="forceSaveClicked()">Save</app-button>
+      <app-button variant="primary" icon="fa-solid fa-rocket" *ngIf="eventData()?.status === 'Draft'" (onClick)="publishEvent()">Publish</app-button>
     </div>
+  </header>
 
-    <div class="editor-section">
-      <h3>Colors</h3>
-      <div class="color-picker-group">
-        <div class="color-field">
-          <label for="primaryColor">Primary Color</label>
-          <div class="color-input-wrapper">
-            <input type="color" id="primaryColor" formControlName="primaryColor">
-            <input type="text" formControlName="primaryColor" class="hex-input">
+  <!-- Main Workspace -->
+  <div class="flex flex-1 pt-[72px]">
+    
+    <!-- Sidebar -->
+    <aside class="w-96 bg-bg-surface border-r border-border overflow-y-auto h-[calc(100vh-72px)] p-6 flex flex-col gap-6" [formGroup]="editorForm">
+      
+      @if (errorMessage()) {
+        <div class="bg-error-bg text-error p-4 rounded-md text-sm font-medium mb-4">{{ errorMessage() }}</div>
+      }
+
+      <app-card customClass="p-6">
+        <h3 class="font-heading text-lg text-text-primary mb-4">Template</h3>
+        <div class="grid grid-cols-2 gap-4">
+          @for (tpl of templates(); track tpl.id) {
+            <label class="cursor-pointer group">
+              <input type="radio" formControlName="templateId" [value]="tpl.id" class="sr-only">
+              <div class="h-24 bg-cover bg-center rounded-md border-2 transition-colors"
+                   [ngClass]="editorForm.get('templateId')?.value === tpl.id ? 'border-primary' : 'border-transparent group-hover:border-border'"
+                   [style.background-image]="'url(' + tpl.previewUrl + ')'"></div>
+              <span class="block text-center mt-2 text-sm font-medium" 
+                    [ngClass]="editorForm.get('templateId')?.value === tpl.id ? 'text-primary' : 'text-text-secondary'">
+                {{ tpl.name }}
+              </span>
+            </label>
+          }
+        </div>
+      </app-card>
+
+      <app-card customClass="p-6">
+        <h3 class="font-heading text-lg text-text-primary mb-4">Colors</h3>
+        <div class="flex gap-4">
+          <div class="flex flex-col gap-1 flex-1">
+            <label class="text-sm font-medium text-text-primary">Primary Color</label>
+            <div class="flex items-center gap-2">
+              <input type="color" formControlName="primaryColor" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+              <input type="text" formControlName="primaryColor" class="flex-1 px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm bg-card-bg text-text-primary">
+            </div>
+          </div>
+          <div class="flex flex-col gap-1 flex-1">
+            <label class="text-sm font-medium text-text-primary">Secondary Color</label>
+            <div class="flex items-center gap-2">
+              <input type="color" formControlName="secondaryColor" class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+              <input type="text" formControlName="secondaryColor" class="flex-1 px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm bg-card-bg text-text-primary">
+            </div>
           </div>
         </div>
-        <div class="color-field">
-          <label for="secondaryColor">Secondary Color</label>
-          <div class="color-input-wrapper">
-            <input type="color" id="secondaryColor" formControlName="secondaryColor">
-            <input type="text" formControlName="secondaryColor" class="hex-input">
+      </app-card>
+
+      <app-card customClass="p-6">
+        <h3 class="font-heading text-lg text-text-primary mb-4">Typography</h3>
+        <div class="flex flex-col gap-1 w-full">
+          <label class="text-sm font-medium text-text-primary">Font Family</label>
+          <select formControlName="fontFamily" class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm bg-card-bg text-text-primary">
+            <option value="Inter">Inter</option>
+            <option value="Playfair Display">Playfair Display</option>
+            <option value="Montserrat">Montserrat</option>
+            <option value="Lora">Lora</option>
+          </select>
+        </div>
+      </app-card>
+
+      <app-card customClass="p-6">
+        <h3 class="font-heading text-lg text-text-primary mb-4">Hero Image</h3>
+        <div 
+          class="border-2 border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer"
+          [ngClass]="{
+            'border-border hover:border-primary-light bg-bg-surface': !editorForm.get('heroImageUrl')?.value && !isUploading(),
+            'border-primary bg-primary-light bg-opacity-10': isUploading(),
+            'border-transparent p-0 overflow-hidden relative group': editorForm.get('heroImageUrl')?.value && !isUploading()
+          }"
+          (dragover)="onDragOver($event)"
+          (drop)="onDrop($event)"
+          (click)="fileInput.click()">
+          
+          @if (isUploading()) {
+            <div class="text-primary font-medium flex flex-col items-center">
+              <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
+              Uploading...
+            </div>
+          } @else if (editorForm.get('heroImageUrl')?.value) {
+            <div class="h-40 bg-cover bg-center w-full" [style.background-image]="'url(' + editorForm.get('heroImageUrl')?.value + ')'"></div>
+            <div class="absolute inset-0 bg-bg-dark bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="text-text-inverse font-medium"><i class="fa-solid fa-camera mr-2"></i> Change Image</span>
+            </div>
+          } @else {
+            <div class="text-text-secondary flex flex-col items-center">
+              <i class="fa-solid fa-cloud-arrow-up text-3xl mb-3 text-text-muted"></i>
+              <span class="font-medium text-text-primary mb-1">Click or drag to upload</span>
+              <span class="text-sm">Max 5MB (JPG, PNG)</span>
+            </div>
+          }
+          <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/jpeg,image/png" class="sr-only">
+        </div>
+      </app-card>
+
+      <app-card customClass="p-6">
+        <h3 class="font-heading text-lg text-text-primary mb-4">Post-Event</h3>
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-1 w-full">
+            <label class="text-sm font-medium text-text-primary">Thank You Message</label>
+            <textarea formControlName="thankYouMessage" rows="3" placeholder="Thank you for celebrating with us!" class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm bg-card-bg text-text-primary resize-none"></textarea>
+          </div>
+          <div class="flex flex-col gap-1 w-full">
+            <label class="text-sm font-medium text-text-primary">Photo Gallery URL</label>
+            <input type="url" formControlName="photoGalleryUrl" placeholder="https://photos.app.goo.gl/..." class="w-full px-4 py-3 border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm bg-card-bg text-text-primary">
           </div>
         </div>
-      </div>
-    </div>
+      </app-card>
+    </aside>
 
-    <div class="editor-section">
-      <h3>Typography</h3>
-      <div class="form-group">
-        <label for="fontFamily">Font Family</label>
-        <select id="fontFamily" formControlName="fontFamily" class="form-control">
-          <option value="Inter">Inter</option>
-          <option value="Playfair Display">Playfair Display</option>
-          <option value="Montserrat">Montserrat</option>
-          <option value="Lora">Lora</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="editor-section">
-      <h3>Hero Image</h3>
-      <div 
-        class="upload-zone" 
-        [class.uploading]="isUploading()"
-        (dragover)="onDragOver($event)"
-        (drop)="onDrop($event)"
-        (click)="fileInput.click()">
+    <!-- Preview Area -->
+    <main class="flex-1 flex items-center justify-center p-8 overflow-y-auto h-[calc(100vh-72px)]">
+      <div class="bg-card-bg rounded-lg shadow-md w-full max-w-3xl min-h-[600px] border border-border overflow-hidden" [attr.data-template]="getSelectedTemplateName()" [ngStyle]="getPreviewStyles()">
         
-        @if (isUploading()) {
-          <div class="upload-progress">Uploading...</div>
-        } @else if (editorForm.get('heroImageUrl')?.value) {
-          <div class="upload-preview" [style.background-image]="'url(' + editorForm.get('heroImageUrl')?.value + ')'"></div>
-          <div class="upload-overlay">
-            <span>Click or drag to change image</span>
+        <!-- Mock Preview Content -->
+        <div class="relative h-64 bg-cover bg-center flex items-center justify-center" 
+             [style.background-image]="editorForm.get('heroImageUrl')?.value ? 'url(' + editorForm.get('heroImageUrl')?.value + ')' : 'none'"
+             [ngClass]="{'bg-bg-surface': !editorForm.get('heroImageUrl')?.value}">
+          <div class="absolute inset-0 bg-bg-dark bg-opacity-40"></div>
+          <div class="relative z-10 text-center px-6">
+            <h1 class="text-5xl font-heading mb-4" [style.color]="editorForm.get('primaryColor')?.value">
+              {{ eventData()?.coupleNames || 'Couple Names' }}
+            </h1>
+            <p class="text-xl font-medium tracking-wide uppercase" [style.color]="editorForm.get('secondaryColor')?.value">
+              {{ (eventData()?.eventDate | date:'longDate') || 'Event Date' }}
+            </p>
           </div>
-        } @else {
-          <div class="upload-placeholder">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-            </svg>
-            <span>Click or drag to upload (Max 5MB)</span>
+        </div>
+        
+        <div class="p-12 text-center" [style.background-color]="editorForm.get('secondaryColor')?.value">
+          <div class="max-w-md mx-auto p-8 rounded-lg shadow-sm bg-card-bg border border-border-light" [style.color]="editorForm.get('primaryColor')?.value">
+            <h2 class="text-3xl font-heading mb-6">Join Us</h2>
+            <p class="text-lg mb-8">{{ eventData()?.venueName || 'Venue Name' }}</p>
+            <app-button variant="primary" [style.background-color]="editorForm.get('primaryColor')?.value" [style.border-color]="editorForm.get('primaryColor')?.value" [style.color]="'#fff'">
+              RSVP Now
+            </app-button>
           </div>
-        }
-        <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/jpeg,image/png" class="sr-only">
-      </div>
-    </div>
-
-    <div class="editor-section">
-      <h3>Post-Event</h3>
-      <div class="form-group">
-        <label for="thankYouMessage">Thank You Message</label>
-        <textarea id="thankYouMessage" formControlName="thankYouMessage" class="form-control" rows="3" placeholder="Thank you for celebrating with us!"></textarea>
-      </div>
-      <div class="form-group" style="margin-top: 1rem;">
-        <label for="photoGalleryUrl">Photo Gallery URL</label>
-        <input type="url" id="photoGalleryUrl" formControlName="photoGalleryUrl" class="form-control" placeholder="https://photos.app.goo.gl/...">
-      </div>
-    </div>
-  </aside>
-
-  <!-- Live Preview -->
-  <main class="editor-preview">
-    <div class="preview-container" [attr.data-template]="getSelectedTemplateName()" [ngStyle]="getPreviewStyles()">
-      <!-- Mock Preview Content -->
-      <div class="preview-hero" [style.background-image]="editorForm.get('heroImageUrl')?.value ? 'url(' + editorForm.get('heroImageUrl')?.value + ')' : 'none'">
-        <div class="preview-hero-overlay"></div>
-        <div class="preview-hero-content">
-          <h1 class="preview-title" [style.color]="editorForm.get('primaryColor')?.value">
-            {{ eventData()?.coupleNames || 'Couple Names' }}
-          </h1>
-          <p class="preview-date" [style.color]="editorForm.get('secondaryColor')?.value">
-            {{ (eventData()?.eventDate | date:'longDate') || 'Event Date' }}
-          </p>
         </div>
       </div>
-      <div class="preview-body" [style.background-color]="editorForm.get('secondaryColor')?.value">
-        <div class="preview-card" [style.color]="editorForm.get('primaryColor')?.value">
-          <h2>Join Us</h2>
-          <p>{{ eventData()?.venueName || 'Venue Name' }}</p>
-          <app-button variant="primary" [style.background-color]="editorForm.get('primaryColor')?.value" [style.border-color]="editorForm.get('primaryColor')?.value">
-            RSVP Now
-          </app-button>
-        </div>
-      </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </div>

@@ -1,9 +1,10 @@
 import { Component, OnInit, inject, signal, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subject, Subscription, debounceTime, tap, catchError, of, switchMap } from 'rxjs';
 import { ButtonComponent } from '../../../shared/components/button.component';
+import { CardComponent } from '../../../shared/components/card.component';
 import { EventService } from '../../../core/services/event.service';
 import { TemplateService } from '../../../core/services/template.service';
 import { EventResponse } from '../../../core/models/event.model';
@@ -12,7 +13,7 @@ import { Template } from '../../../core/models/template.model';
 @Component({
   selector: 'app-edit-event-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, CardComponent, RouterLink],
   templateUrl: './edit-event.page.html',
   styleUrls: ['./edit-event.page.css']
 })
@@ -138,6 +139,15 @@ export default class EditEventPage implements OnInit, OnDestroy {
       tap(() => this.saveState.set('saved')),
       catchError(() => of(true)) // allow navigation even if it fails, or handle differently
     );
+  }
+
+  forceSaveClicked() {
+    this.forceSave().subscribe();
+  }
+
+  publishEvent() {
+    // In a real implementation this would open the publish dialog similar to the dashboard
+    alert('Please go to the dashboard to publish your event.');
   }
 
   private loadTemplates() {

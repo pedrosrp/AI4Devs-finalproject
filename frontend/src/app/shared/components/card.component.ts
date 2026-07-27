@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'app-card',
   standalone: true,
   template: `
-    <div [class]="'bg-card-bg rounded-lg shadow-sm border border-border overflow-hidden ' + customClass">
+    <div [class]="'bg-card-bg rounded-lg shadow-md border border-border-light overflow-hidden ' + customClass">
       <ng-content></ng-content>
     </div>
   `

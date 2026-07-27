@@ -6,8 +6,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-border-light rounded-lg">
-      <div *ngIf="icon" class="mb-4 text-text-muted">
+    <div class="flex flex-col items-center justify-center text-center p-8 border border-dashed border-border-light rounded-lg">
+      <div *ngIf="icon" class="mb-4 text-text-muted bg-bg-surface rounded-full p-4 inline-flex items-center justify-center w-16 h-16">
         <!-- Optional slot for SVG icon -->
         <ng-content select="[icon]"></ng-content>
       </div>

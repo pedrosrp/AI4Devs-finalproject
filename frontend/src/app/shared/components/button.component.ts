@@ -13,8 +13,9 @@ export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
       [disabled]="disabled"
       (click)="onClick.emit($event)"
       [ngClass]="getClasses()"
-      class="inline-flex items-center justify-center font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
+      class="inline-flex items-center justify-center gap-2 font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
     >
+      <i *ngIf="icon" [class]="icon"></i>
       <ng-content></ng-content>
     </button>
   `
@@ -23,6 +24,7 @@ export class ButtonComponent {
   @Input() variant: ButtonVariant = 'primary';
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() disabled = false;
+  @Input() icon = '';
   @Input() customClass = '';
   @Output() onClick = new EventEmitter<MouseEvent>();
 

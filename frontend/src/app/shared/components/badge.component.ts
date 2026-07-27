@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export type BadgeStatus = 'pending' | 'confirmed' | 'cancelled' | 'info';
+export type BadgeStatus = 'pending' | 'confirmed' | 'cancelled' | 'info' | 'published' | 'draft';
 
 @Component({
   selector: 'app-badge',
@@ -10,7 +10,7 @@ export type BadgeStatus = 'pending' | 'confirmed' | 'cancelled' | 'info';
   template: `
     <span
       [ngClass]="getClasses()"
-      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+      class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium"
     >
       <ng-content></ng-content>
     </span>
@@ -22,8 +22,10 @@ export class BadgeComponent {
   getClasses(): string {
     switch (this.status) {
       case 'pending':
+      case 'draft':
         return 'bg-warning-bg text-warning';
       case 'confirmed':
+      case 'published':
         return 'bg-success-bg text-success';
       case 'cancelled':
         return 'bg-error-bg text-error';
