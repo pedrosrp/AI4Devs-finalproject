@@ -2,9 +2,9 @@
 @model Event
 
 :root {
-    --primary-color: @(Model.Template?.PrimaryColor ?? "#000000");
-    --secondary-color: @(Model.Template?.SecondaryColor ?? "#ffffff");
-    --font-family: '@(Model.Template?.FontFamily ?? "Arial")', sans-serif;
+    --primary-color: @(Model.PrimaryColor ?? "#000000");
+    --secondary-color: @(Model.SecondaryColor ?? "#ffffff");
+    --font-family: '@(Model.FontFamily ?? "Arial")', sans-serif;
 }
 
 body {
