@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaymentService } from '../../../../core/services/payment.service';
 import { loadStripe, Stripe, StripeElements, StripePaymentElement } from '@stripe/stripe-js';
@@ -28,7 +28,10 @@ export class PublishDialogComponent implements OnInit, AfterViewInit, OnDestroy 
   elements: StripeElements | null = null;
   paymentElement: StripePaymentElement | null = null;
 
-  constructor(private paymentService: PaymentService) {}
+  constructor(
+    private paymentService: PaymentService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   async ngOnInit() {
     this.stripe = await loadStripe(environment.stripePublishableKey);
@@ -67,6 +70,7 @@ export class PublishDialogComponent implements OnInit, AfterViewInit, OnDestroy 
           return;
         }
         this.loading = false;
+        this.cdr.detectChanges();
         setTimeout(() => this.mountPaymentElement(), 0);
       },
       error: () => {
