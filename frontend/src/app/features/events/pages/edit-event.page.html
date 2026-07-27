@@ -1,17 +1,17 @@
 <div class="min-h-screen bg-bg-cream pb-12">
-  <!-- Top Bar -->
+  <!-- Edit Event Sub-header -->
   <header class="bg-card-bg border-b border-border-light sticky top-0 z-20">
-    <div class="flex items-center justify-between px-6 lg:px-8 py-4">
-      <div class="flex items-center gap-4">
-        <a routerLink="/dashboard" class="text-text-secondary hover:text-text-primary transition-colors">
-          <i class="fa-solid fa-arrow-left"></i>
-        </a>
-        <div class="text-sm font-medium text-text-secondary flex items-center">
-          Dashboard <span class="mx-2">/</span> <span class="text-text-primary">{{ eventData()?.coupleNames || eventData()?.name || 'Loading...' }}</span>
-        </div>
-        <h1 class="font-heading text-2xl text-text-primary ml-4 m-0 border-l border-border pl-4">Edit Event</h1>
+    <div class="flex items-center justify-between px-6 lg:px-8 py-3">
+      <nav class="flex items-center gap-2 text-sm font-medium text-text-secondary">
+        <a routerLink="/dashboard" class="hover:text-text-primary transition-colors">Dashboard</a>
+        <span class="text-text-muted">-</span>
+        <span class="text-text-primary">{{ eventData()?.coupleNames || eventData()?.name || 'Loading...' }}</span>
+        <span class="text-text-muted">-</span>
+        <span class="text-text-primary">Edit event</span>
+      </nav>
 
-        <div class="ml-4 text-xs font-medium" [ngClass]="{
+      <div class="flex items-center gap-4">
+        <span class="text-xs font-medium" [ngClass]="{
           'text-success': saveState() === 'saved',
           'text-warning': saveState() === 'saving',
           'text-info': saveState() === 'unsaved',
@@ -26,12 +26,7 @@
           } @else if (saveState() === 'error') {
             <i class="fa-solid fa-triangle-exclamation mr-1"></i> Error saving
           }
-        </div>
-      </div>
-
-      <div class="flex items-center gap-3">
-        <app-button variant="ghost" icon="fa-solid fa-eye">Preview</app-button>
-        <app-button variant="secondary" icon="fa-regular fa-floppy-disk" (onClick)="forceSaveClicked()">Save</app-button>
+        </span>
         <app-button variant="primary" icon="fa-solid fa-paper-plane" *ngIf="eventData()?.status === 'Draft' || eventData()?.status === 'draft'" (onClick)="publishEvent()">Publish</app-button>
       </div>
     </div>
