@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, Output, OnInit, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaymentService } from '../../../../core/services/payment.service';
+import { EventService } from '../../../../core/services/event.service';
 import { loadStripe, Stripe, StripeElements, StripeCardElement } from '@stripe/stripe-js';
+import { timer, of, switchMap, takeWhile, catchError } from 'rxjs';
 
 @Component({
   selector: 'app-publish-dialog',
@@ -29,6 +31,7 @@ export class PublishDialogComponent implements OnInit, OnDestroy {
 
   constructor(
     private paymentService: PaymentService,
+    private eventService: EventService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -85,6 +88,7 @@ export class PublishDialogComponent implements OnInit, OnDestroy {
     }
 
     this.cardElement = this.elements.create('card', {
+      hidePostalCode: true,
       style: {
         base: {
           fontSize: '16px',
@@ -113,13 +117,45 @@ export class PublishDialogComponent implements OnInit, OnDestroy {
     if (error) {
       this.error = error.message || 'Payment failed.';
       this.processing = false;
-    } else if (paymentIntent && paymentIntent.status === 'succeeded') {
-      this.processing = false;
-      this.published.emit();
+      return;
+    }
+
+    if (paymentIntent && paymentIntent.status === 'succeeded') {
+      this.error = null;
+      this.pollForPublishedStatus();
     } else {
       this.error = 'Payment was not completed. Please try again.';
       this.processing = false;
     }
+  }
+
+  private pollForPublishedStatus(maxAttempts = 15) {
+    let attempts = 0;
+
+    timer(0, 2000)
+      .pipe(
+        switchMap(() => {
+          attempts++;
+          return this.eventService.getEvent(this.eventSlug);
+        }),
+        takeWhile((event) => event.status !== 'Published' && attempts < maxAttempts, true),
+        catchError(() => of(null))
+      )
+      .subscribe({
+        next: (event) => {
+          if (event && event.status === 'Published') {
+            this.processing = false;
+            this.published.emit();
+          } else if (attempts >= maxAttempts) {
+            this.error = 'Payment succeeded, but we could not confirm publication. Please refresh the dashboard.';
+            this.processing = false;
+          }
+        },
+        error: () => {
+          this.error = 'Payment succeeded, but we could not confirm publication. Please refresh the dashboard.';
+          this.processing = false;
+        }
+      });
   }
 
   onClose() {

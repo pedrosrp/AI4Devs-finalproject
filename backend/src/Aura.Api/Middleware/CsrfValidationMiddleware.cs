@@ -7,7 +7,13 @@ namespace Aura.Api.Middleware;
 public class CsrfValidationMiddleware(RequestDelegate next)
 {
     private static readonly HashSet<string> SafeMethods = ["GET", "HEAD", "OPTIONS"];
-    private static readonly HashSet<string> ExcludedPaths = new(StringComparer.OrdinalIgnoreCase) { "/api/auth/magic-link", "/api/auth/verify" };
+    private static readonly HashSet<string> ExcludedPaths = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "/api/auth/magic-link",
+        "/api/auth/verify",
+        "/api/payments/webhook",
+        "/api/webhooks/whatsapp"
+    };
     private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
     public async Task InvokeAsync(HttpContext context)
