@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Aura.Workers.Email;
+namespace Aura.Infrastructure.Services;
 
 public class EmailTemplateRenderer
 {

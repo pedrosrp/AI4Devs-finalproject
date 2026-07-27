@@ -49,6 +49,7 @@ public static class DependencyInjection
         services.AddScoped<IMagicLinkService, MagicLinkService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IEmailService, SmtpEmailService>();
+        services.AddSingleton<EmailTemplateRenderer>();
 
         services.AddScoped<ISlugGenerator, SlugGenerator>();
         services.AddScoped<IEventService, EventService>();

@@ -9,6 +9,7 @@ using Aura.Core.Enums;
 using Aura.Core.Interfaces.Repositories;
 using Aura.Core.Interfaces.Services;
 using Aura.Core.Models;
+using Aura.Infrastructure.Services;
 using Aura.Workers.Email;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

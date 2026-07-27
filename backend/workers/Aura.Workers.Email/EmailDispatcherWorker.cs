@@ -8,6 +8,7 @@ using Aura.Core.Interfaces.Repositories;
 using Aura.Core.Interfaces.Services;
 using Aura.Core.Models;
 using Aura.Infrastructure.Queue;
+using Aura.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
