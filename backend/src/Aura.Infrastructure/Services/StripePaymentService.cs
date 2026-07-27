@@ -103,15 +103,15 @@ public class StripePaymentService : IPaymentService
         var service = new PaymentIntentService();
         var paymentIntent = await service.CreateAsync(options, cancellationToken: cancellationToken);
 
-        var existingPayment = await _paymentRepository.GetByEventIdAsync(eventId, cancellationToken);
-        if (existingPayment != null)
+        var existingIntentPayment = await _paymentRepository.GetByEventIdAsync(eventId, cancellationToken);
+        if (existingIntentPayment != null)
         {
-            existingPayment.StripePaymentIntentId = paymentIntent.Id;
-            existingPayment.Amount = amountInCents / 100m;
-            existingPayment.Tier = tier;
-            existingPayment.Status = PaymentStatus.Pending;
+            existingIntentPayment.StripePaymentIntentId = paymentIntent.Id;
+            existingIntentPayment.Amount = amountInCents / 100m;
+            existingIntentPayment.Tier = tier;
+            existingIntentPayment.Status = PaymentStatus.Pending;
             
-            await _paymentRepository.UpdateAsync(existingPayment, cancellationToken);
+            await _paymentRepository.UpdateAsync(existingIntentPayment, cancellationToken);
         }
         else
         {
