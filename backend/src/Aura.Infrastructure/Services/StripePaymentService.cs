@@ -53,7 +53,7 @@ public class StripePaymentService : IPaymentService
         if (string.IsNullOrEmpty(_options.SecretKey))
         {
             _logger.LogWarning("Stripe SecretKey is not configured. Bypassing payment for event {EventId}.", eventId);
-            var payment = new Payment
+            var bypassPayment = new Payment
             {
                 EventId = eventId,
                 StripePaymentIntentId = "bypass_" + Guid.NewGuid().ToString(),
@@ -63,7 +63,7 @@ public class StripePaymentService : IPaymentService
                 Tier = tier,
                 CompletedAt = DateTimeOffset.UtcNow
             };
-            await _paymentRepository.AddAsync(payment, cancellationToken);
+            await _paymentRepository.AddAsync(bypassPayment, cancellationToken);
 
             ev.Status = EventStatus.Published;
             ev.PublishedAt = DateTimeOffset.UtcNow;
