@@ -41,6 +41,6 @@ export const routes: Routes = [
     path: 'rsvp/:token/confirmation',
     loadComponent: () => import('./features/rsvp/pages/rsvp-confirmation.page').then(m => m.RsvpConfirmationPageComponent)
   },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', loadComponent: () => import('./features/public/pages/landing.page') },
   { path: '**', redirectTo: '/dashboard' }
 ];
