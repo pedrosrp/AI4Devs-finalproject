@@ -122,6 +122,12 @@ public class EventService : IEventService
         ev.UpdatedAt = DateTimeOffset.UtcNow;
 
         await _eventRepository.UpdateAsync(ev);
+
+        if (ev.Status == EventStatus.Published)
+        {
+            await _queueService.EnqueueAsync("ssg:queue", JsonSerializer.Serialize(new { EventId = ev.Id, EventSlug = ev.Slug, EventType = "updated" }));
+        }
+
         return MapToResponse(ev);
     }
 
