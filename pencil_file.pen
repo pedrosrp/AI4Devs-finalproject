@@ -539,7 +539,8 @@
                       "fill": "$text-secondary",
                       "content": "Events",
                       "fontFamily": "$font-body",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -548,7 +549,8 @@
                       "fill": "$text-secondary",
                       "content": "Guests",
                       "fontFamily": "$font-body",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -557,7 +559,8 @@
                       "fill": "$text-secondary",
                       "content": "Settings",
                       "fontFamily": "$font-body",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -728,7 +731,8 @@
                       "fill": "$text-secondary",
                       "content": "Events",
                       "fontFamily": "$font-body",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -761,7 +765,8 @@
                       "fill": "$text-secondary",
                       "content": "Guests",
                       "fontFamily": "$font-body",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -794,7 +799,8 @@
                       "fill": "$text-secondary",
                       "content": "Invitations",
                       "fontFamily": "$font-body",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -827,7 +833,8 @@
                       "fill": "$text-secondary",
                       "content": "Live Messages",
                       "fontFamily": "$font-body",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -860,7 +867,8 @@
                       "fill": "$text-secondary",
                       "content": "Settings",
                       "fontFamily": "$font-body",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -1645,7 +1653,8 @@
               "content": "Sarah & James",
               "textAlign": "center",
               "fontFamily": "$font-heading",
-              "fontSize": 56
+              "fontSize": 56,
+              "fontWeight": "normal"
             },
             {
               "type": "frame",
@@ -2912,6 +2921,979 @@
                   ]
                 }
               ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "pGMxT",
+      "x": 0,
+      "y": 1560,
+      "name": "Landing Page",
+      "clip": true,
+      "width": 1200,
+      "height": 2600,
+      "fill": "$bg-cream",
+      "layout": "vertical",
+      "children": [
+        {
+          "id": "Al6B5",
+          "type": "ref",
+          "ref": "nnqMK",
+          "name": "Landing Navbar",
+          "width": "fill_container",
+          "descendants": {
+            "YnMxi": {
+              "content": "Home",
+              "fill": "$text-primary"
+            },
+            "dCyc3": {
+              "content": "About",
+              "fill": "$text-secondary"
+            },
+            "bpkrL": {
+              "content": "Features",
+              "fill": "$text-secondary"
+            },
+            "zKIWx": {
+              "content": "Pricing",
+              "fill": "$text-secondary"
+            }
+          }
+        },
+        {
+          "type": "frame",
+          "id": "q23Cb",
+          "name": "Hero Section",
+          "width": "fill_container",
+          "height": 520,
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            64,
+            80
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "xKnU1",
+              "name": "Hero Tag",
+              "fill": "$color-success-bg",
+              "cornerRadius": "$radius-full",
+              "padding": [
+                8,
+                16
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "uQYZE",
+                  "name": "Tag Text",
+                  "fill": "$primary",
+                  "content": "Wedding Planning Made Simple",
+                  "fontFamily": "$font-body",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "lFbjs",
+              "name": "Hero Title",
+              "fill": "$text-primary",
+              "textGrowth": "fixed-width",
+              "width": 720,
+              "content": "Plan Your Perfect Day with Aura",
+              "lineHeight": 1.2,
+              "textAlign": "center",
+              "fontFamily": "$font-heading",
+              "fontSize": 56,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "J9Aehm",
+              "name": "Hero Subtitle",
+              "fill": "$text-secondary",
+              "textGrowth": "fixed-width",
+              "width": 640,
+              "content": "Aura Planning helps couples create beautiful invitations, manage guest lists, track RSVPs, and keep everyone informed — all in one elegant platform.",
+              "lineHeight": 1.5,
+              "textAlign": "center",
+              "fontFamily": "$font-body",
+              "fontSize": 18,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "Oj0KM",
+              "name": "Hero Buttons",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "id": "RDwRU",
+                  "type": "ref",
+                  "ref": "btRLX",
+                  "name": "Get Started Button",
+                  "descendants": {
+                    "tGLpq": {
+                      "content": "Start Planning Free"
+                    }
+                  }
+                },
+                {
+                  "id": "h0jThs",
+                  "type": "ref",
+                  "ref": "lLsFG",
+                  "name": "Learn More Button",
+                  "descendants": {
+                    "uRWbl": {
+                      "content": "See How It Works"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "v7Tayk",
+          "name": "About Section",
+          "width": "fill_container",
+          "fill": "$card-bg",
+          "gap": 64,
+          "padding": 80,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "NiRHK",
+              "name": "About Text",
+              "width": 560,
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "MR56D",
+                  "name": "About Label",
+                  "fill": "$accent",
+                  "content": "WHO WE ARE",
+                  "fontFamily": "$font-body",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "letterSpacing": 3
+                },
+                {
+                  "type": "text",
+                  "id": "RfZcP",
+                  "name": "About Title",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 560,
+                  "content": "We believe every celebration deserves to feel effortless",
+                  "lineHeight": 1.2,
+                  "fontFamily": "$font-heading",
+                  "fontSize": 36,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "d6sFQ",
+                  "name": "About Body",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 560,
+                  "content": "Aura Planning was born from a simple idea: wedding planning should be joyful, not overwhelming. We built a platform that combines elegant design with powerful tools — so you can focus on what matters most: sharing your special day with the people you love.",
+                  "lineHeight": 1.5,
+                  "fontFamily": "$font-body",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "rGDbx",
+                  "name": "About Stats",
+                  "gap": 40,
+                  "padding": [
+                    24,
+                    0
+                  ],
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "O0mstu",
+                      "name": "Stat 1",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "nTAYN",
+                          "name": "Stat Value 1",
+                          "fill": "$primary",
+                          "content": "10,000+",
+                          "fontFamily": "$font-heading",
+                          "fontSize": 28,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "DIaF1",
+                          "name": "Stat Label 1",
+                          "fill": "$text-muted",
+                          "content": "Events Planned",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "S8Oe7",
+                      "name": "Stat 2",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ym8mc",
+                          "name": "Stat Value 2",
+                          "fill": "$primary",
+                          "content": "500,000+",
+                          "fontFamily": "$font-heading",
+                          "fontSize": 28,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "x6Ys0",
+                          "name": "Stat Label 2",
+                          "fill": "$text-muted",
+                          "content": "Invitations Sent",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "arZIb",
+                      "name": "Stat 3",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "bQC3A",
+                          "name": "Stat Value 3",
+                          "fill": "$primary",
+                          "content": "98%",
+                          "fontFamily": "$font-heading",
+                          "fontSize": 28,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "j2gzxQ",
+                          "name": "Stat Label 3",
+                          "fill": "$text-muted",
+                          "content": "Happy Couples",
+                          "fontFamily": "$font-body",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "n75qR",
+              "name": "About Image",
+              "width": 420,
+              "height": 420,
+              "fill": "$bg-surface",
+              "cornerRadius": "$radius-lg",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "S3iyR",
+                  "name": "About Icon",
+                  "width": 80,
+                  "height": 80,
+                  "icon": "heart",
+                  "library": "lucide",
+                  "fill": "$secondary"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "iHMrI",
+          "name": "Features Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 48,
+          "padding": 80,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "vO31h",
+              "name": "Features Header",
+              "width": 720,
+              "layout": "vertical",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ApuUy",
+                  "name": "Features Label",
+                  "fill": "$accent",
+                  "content": "WHAT WE DO",
+                  "fontFamily": "$font-body",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "letterSpacing": 3
+                },
+                {
+                  "type": "text",
+                  "id": "Ev9ml",
+                  "name": "Features Title",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": 720,
+                  "content": "Everything you need to plan, invite, and delight your guests",
+                  "lineHeight": 1.2,
+                  "textAlign": "center",
+                  "fontFamily": "$font-heading",
+                  "fontSize": 36,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "F7R6d",
+              "name": "Features Grid",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 24,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "i0pX1",
+                  "name": "Feature Row",
+                  "width": "fill_container",
+                  "gap": 24,
+                  "justifyContent": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "nQrly",
+                      "name": "Beautiful Invitations Card",
+                      "width": 320,
+                      "height": 240,
+                      "fill": "$card-bg",
+                      "cornerRadius": "$radius-md",
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "$shadow-md",
+                        "offset": {
+                          "x": 0,
+                          "y": 4
+                        },
+                        "blur": 12
+                      },
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 28,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "R2kf3",
+                          "name": "Feature Icon Box",
+                          "width": 48,
+                          "height": 48,
+                          "fill": "$color-success-bg",
+                          "cornerRadius": "$radius-sm",
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "x8t11",
+                              "name": "Feature Icon",
+                              "width": 24,
+                              "height": 24,
+                              "icon": "mail",
+                              "library": "lucide",
+                              "fill": "$primary"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "nfzKX",
+                          "name": "Feature Title",
+                          "fill": "$text-primary",
+                          "textGrowth": "fixed-width",
+                          "width": 264,
+                          "content": "Beautiful Invitations",
+                          "fontFamily": "$font-heading",
+                          "fontSize": 20,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "P1MDg",
+                          "name": "Feature Description",
+                          "fill": "$text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": 264,
+                          "content": "Choose from elegant templates and customize colors, fonts, and photos to match your style.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "k9u6I",
+                      "name": "Guest Management Card",
+                      "width": 320,
+                      "height": 240,
+                      "fill": "$card-bg",
+                      "cornerRadius": "$radius-md",
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "$shadow-md",
+                        "offset": {
+                          "x": 0,
+                          "y": 4
+                        },
+                        "blur": 12
+                      },
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 28,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "QmClK",
+                          "name": "Feature Icon Box",
+                          "width": 48,
+                          "height": 48,
+                          "fill": "$color-success-bg",
+                          "cornerRadius": "$radius-sm",
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "Dbidc",
+                              "name": "Feature Icon",
+                              "width": 24,
+                              "height": 24,
+                              "icon": "users",
+                              "library": "lucide",
+                              "fill": "$primary"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "jsQcd",
+                          "name": "Feature Title",
+                          "fill": "$text-primary",
+                          "textGrowth": "fixed-width",
+                          "width": 264,
+                          "content": "Guest Management",
+                          "fontFamily": "$font-heading",
+                          "fontSize": 20,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "IARjo",
+                          "name": "Feature Description",
+                          "fill": "$text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": 264,
+                          "content": "Import guests via CSV, organize by categories, and track invitations at a glance.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "g9PtC",
+                      "name": "RSVP Tracking Card",
+                      "width": 320,
+                      "height": 240,
+                      "fill": "$card-bg",
+                      "cornerRadius": "$radius-md",
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "$shadow-md",
+                        "offset": {
+                          "x": 0,
+                          "y": 4
+                        },
+                        "blur": 12
+                      },
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 28,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "UJGU4",
+                          "name": "Feature Icon Box",
+                          "width": 48,
+                          "height": 48,
+                          "fill": "$color-success-bg",
+                          "cornerRadius": "$radius-sm",
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "piWfq",
+                              "name": "Feature Icon",
+                              "width": 24,
+                              "height": 24,
+                              "icon": "check-circle",
+                              "library": "lucide",
+                              "fill": "$primary"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "BCHNI",
+                          "name": "Feature Title",
+                          "fill": "$text-primary",
+                          "textGrowth": "fixed-width",
+                          "width": 264,
+                          "content": "RSVP Tracking",
+                          "fontFamily": "$font-heading",
+                          "fontSize": 20,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "d71RO",
+                          "name": "Feature Description",
+                          "fill": "$text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": 264,
+                          "content": "Get real-time RSVP updates, dietary preferences, and transport needs in your dashboard.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "U7KZ7h",
+                  "name": "Feature Row",
+                  "width": "fill_container",
+                  "gap": 24,
+                  "justifyContent": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kv6MH",
+                      "name": "Live Updates Card",
+                      "width": 320,
+                      "height": 240,
+                      "fill": "$card-bg",
+                      "cornerRadius": "$radius-md",
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "$shadow-md",
+                        "offset": {
+                          "x": 0,
+                          "y": 4
+                        },
+                        "blur": 12
+                      },
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 28,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "O278D",
+                          "name": "Feature Icon Box",
+                          "width": 48,
+                          "height": 48,
+                          "fill": "$color-success-bg",
+                          "cornerRadius": "$radius-sm",
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "id3ar",
+                              "name": "Feature Icon",
+                              "width": 24,
+                              "height": 24,
+                              "icon": "message-circle",
+                              "library": "lucide",
+                              "fill": "$primary"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "smjpk",
+                          "name": "Feature Title",
+                          "fill": "$text-primary",
+                          "textGrowth": "fixed-width",
+                          "width": 264,
+                          "content": "Live Updates",
+                          "fontFamily": "$font-heading",
+                          "fontSize": 20,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "yc5OX",
+                          "name": "Feature Description",
+                          "fill": "$text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": 264,
+                          "content": "Empower your accomplices to send instant WhatsApp updates during the event.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "MfGgG",
+                      "name": "Venue & Maps Card",
+                      "width": 320,
+                      "height": 240,
+                      "fill": "$card-bg",
+                      "cornerRadius": "$radius-md",
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "$shadow-md",
+                        "offset": {
+                          "x": 0,
+                          "y": 4
+                        },
+                        "blur": 12
+                      },
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 28,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "ZF1Dg",
+                          "name": "Feature Icon Box",
+                          "width": 48,
+                          "height": 48,
+                          "fill": "$color-success-bg",
+                          "cornerRadius": "$radius-sm",
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "SoR6r",
+                              "name": "Feature Icon",
+                              "width": 24,
+                              "height": 24,
+                              "icon": "map-pin",
+                              "library": "lucide",
+                              "fill": "$primary"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "UD5BV",
+                          "name": "Feature Title",
+                          "fill": "$text-primary",
+                          "textGrowth": "fixed-width",
+                          "width": 264,
+                          "content": "Venue & Maps",
+                          "fontFamily": "$font-heading",
+                          "fontSize": 20,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "fh50m",
+                          "name": "Feature Description",
+                          "fill": "$text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": 264,
+                          "content": "Share venue details with embedded maps and one-tap directions for your guests.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "SPGO9",
+                      "name": "Privacy First Card",
+                      "width": 320,
+                      "height": 240,
+                      "fill": "$card-bg",
+                      "cornerRadius": "$radius-md",
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "$shadow-md",
+                        "offset": {
+                          "x": 0,
+                          "y": 4
+                        },
+                        "blur": 12
+                      },
+                      "layout": "vertical",
+                      "gap": 12,
+                      "padding": 28,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "O3CVL1",
+                          "name": "Feature Icon Box",
+                          "width": 48,
+                          "height": 48,
+                          "fill": "$color-success-bg",
+                          "cornerRadius": "$radius-sm",
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "icon",
+                              "id": "rxOw0",
+                              "name": "Feature Icon",
+                              "width": 24,
+                              "height": 24,
+                              "icon": "shield-check",
+                              "library": "lucide",
+                              "fill": "$primary"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "G6h0Re",
+                          "name": "Feature Title",
+                          "fill": "$text-primary",
+                          "textGrowth": "fixed-width",
+                          "width": 264,
+                          "content": "Privacy First",
+                          "fontFamily": "$font-heading",
+                          "fontSize": 20,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Q6aoM",
+                          "name": "Feature Description",
+                          "fill": "$text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": 264,
+                          "content": "Your data is encrypted and automatically deleted 30 days after your event.",
+                          "lineHeight": 1.5,
+                          "fontFamily": "$font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "HODWH",
+          "name": "CTA Section",
+          "width": "fill_container",
+          "fill": "$primary",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": 80,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "i2AnGw",
+              "name": "CTA Title",
+              "fill": "$card-bg",
+              "textGrowth": "fixed-width",
+              "width": 640,
+              "content": "Ready to plan your dream event?",
+              "lineHeight": 1.2,
+              "textAlign": "center",
+              "fontFamily": "$font-heading",
+              "fontSize": 36,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "mwOik",
+              "name": "CTA Subtitle",
+              "fill": "#FFFFFF",
+              "textGrowth": "fixed-width",
+              "width": 640,
+              "content": "Create your first event for free. No credit card required.",
+              "lineHeight": 1.5,
+              "textAlign": "center",
+              "fontFamily": "$font-body",
+              "fontSize": 18,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "PxK0k",
+              "name": "CTA Button",
+              "fill": "$card-bg",
+              "cornerRadius": "$radius-sm",
+              "gap": 8,
+              "padding": [
+                14,
+                28
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "lj6lM",
+                  "name": "CTA Icon",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "arrow-right",
+                  "library": "lucide",
+                  "fill": "$primary"
+                },
+                {
+                  "type": "text",
+                  "id": "rJH9Y",
+                  "name": "CTA Button Label",
+                  "fill": "$primary",
+                  "content": "Get Started for Free",
+                  "fontFamily": "$font-body",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "RH3TJ",
+          "name": "Footer Section",
+          "width": "fill_container",
+          "fill": "#000000",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            48,
+            80
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "n3mogW",
+              "name": "Footer Logo",
+              "gap": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "ellipse",
+                  "id": "H7SW97",
+                  "name": "Footer Logo Mark",
+                  "fill": "$primary",
+                  "width": 28,
+                  "height": 28
+                },
+                {
+                  "type": "text",
+                  "id": "L8S6R",
+                  "name": "Footer Brand",
+                  "fill": "$card-bg",
+                  "content": "Aura",
+                  "fontFamily": "$font-heading",
+                  "fontSize": 20,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "ghSpe",
+              "name": "Footer Tagline",
+              "fill": "$text-muted",
+              "content": "Elegant planning for unforgettable moments.",
+              "textAlign": "center",
+              "fontFamily": "$font-body",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "ryjnc",
+              "name": "Footer Copyright",
+              "fill": "$text-muted",
+              "content": "© 2026 Aura Planning. All rights reserved.",
+              "textAlign": "center",
+              "fontFamily": "$font-body",
+              "fontSize": 12,
+              "fontWeight": "normal"
             }
           ]
         }

@@ -55,7 +55,7 @@ public class SmtpEmailService : IEmailService
                         <p>&copy; 2026 Aura Planning. All rights reserved.</p>
                     </div>
                 </div>
-            </div>"";
+            </div>";
 
         var mailMessage = new MailMessage
         {
