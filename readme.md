@@ -133,7 +133,7 @@ A continuación se muestra un vídeo de demostración de la implementación actu
 ### **1.4. Instrucciones de instalación:**
 
 #### Requisitos previos
-- .NET 9 SDK
+- .NET 10 SDK
 - Node.js 20+ y npm
 - Docker Desktop (o Docker Engine + Docker Compose)
 
