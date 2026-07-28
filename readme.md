@@ -169,7 +169,7 @@ docker compose down -v
 
 > **Nota:** Los puertos y credenciales están alineados con `backend/src/Aura.Api/appsettings.Development.json`. Si cambias valores en docker-compose, actualiza también ese archivo.
 
-#### Backend (.NET 9) — Desarrollo local
+#### Backend (.NET 10) — Desarrollo local
 
 ```bash
 # 1. Levantar infraestructura primero
